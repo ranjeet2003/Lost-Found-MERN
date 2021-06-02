@@ -58,28 +58,36 @@ const IllustrationImage = styled.div`
   ${tw`m-12 xl:m-16 w-full max-w-sm bg-contain bg-center bg-no-repeat`}
 `;
 
-const submitHandler = (event) => {
-  event.preventDefault();
-  // const data = {
-  const email = event.target.value;
-  const passoword = event.target.value;
-  // };
-  window.alert(typeof email);
-  // console.log(email);
-};
-
 export const DesktopNavLinks = tw.nav`
   hidden lg:flex flex-1 justify-between items-center
 `;
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
       passoword: "",
     };
+    this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.onSubmitHandler = this.onSubmitHandler.bind(this);
   }
+
+  onChangeHandler(event) {
+    this.setState({
+      email: event.target.value,
+      passoword: event.target.value,
+    });
+  }
+  onSubmitHandler = (event) => {
+    event.preventDefault();
+    // const data = {
+    const email = event.target.value;
+    const passoword = event.target.value;
+    // };
+    window.alert("The form data is" + this.state);
+    // console.log(email);
+  };
 
   render(
     logoLinkUrl = "#",
@@ -130,18 +138,20 @@ export default class Login extends Component {
                   <DividerTextContainer>
                     <DividerText>Or Sign in with your e-mail</DividerText>
                   </DividerTextContainer>
-                  <Form onSubmit={submitHandler}>
+                  <Form onSubmit={this.onSubmitHandler}>
                     <Input
                       type="email"
                       placeholder="Email"
                       name="email"
                       value={this.state.email}
+                      onChange={this.onChangeHandler}
                     />
                     <Input
                       type="password"
                       placeholder="Password"
                       name="password"
                       value={this.state.passoword}
+                      onChange={this.onChangeHandler}
                     />
                     <SubmitButton type="submit">
                       <SubmitButtonIcon className="icon" />
@@ -178,7 +188,7 @@ export default class Login extends Component {
   }
 }
 
-// export default Login;
+export default Login;
 
 const collapseBreakPointCssMap = {
   sm: {
