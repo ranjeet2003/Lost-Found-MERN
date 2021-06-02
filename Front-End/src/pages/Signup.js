@@ -1,4 +1,4 @@
-import React from "react";
+import { React, Component } from "react";
 import { Link } from "react-router-dom";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import { Container as ContainerBase } from "components/misc/Layouts";
@@ -58,98 +58,166 @@ const IllustrationImage = styled.div`
   ${(props) => `background-image: url("${props.imageSrc}");`}
   ${tw`m-12 xl:m-16 w-full max-w-lg bg-contain bg-center bg-no-repeat`}
 `;
+export default class Signup extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      mobileNo: "",
+      email: "",
+      password: "",
+    };
+    this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.onSubmitHandler = this.onSubmitHandler.bind(this);
+  }
 
-export default ({
-  // roundedHeaderButton = "",
-  logoLinkUrl = "#",
-  illustrationImageSrc = illustration,
-  headingText = "Create Account For Lost-Found",
-  socialButtons = [
-    {
-      iconImageSrc: googleIconImageSrc,
-      text: "Sign Up With Google",
-      url: "https://google.com",
-    },
-    {
-      iconImageSrc: twitterIconImageSrc,
-      text: "Sign Up With Twitter",
-      url: "https://twitter.com",
-    },
-  ],
-  submitButtonText = "Sign Up",
-  SubmitButtonIcon = SignUpIcon,
-  tosUrl = "#",
-  privacyPolicyUrl = "#",
-  // signInUrl = "#",
-}) => (
-  <AnimationRevealPage>
-    {/* <Navbar roundedHeaderButton={true} /> */}
-    <Header roundedHeaderButton={true} />
+  onChangeHandler(event) {
+    let target = event.target;
+    let value = target.value;
+    let name = target.name;
+    this.setState({
+      [name]: value,
+    });
+  }
+  onSubmitHandler = (event) => {
+    // const data = {
 
-    <Container>
-      <Content>
-        <MainContainer>
-          <LogoLink href={logoLinkUrl}>
-            <LogoImage src={logo} />
-          </LogoLink>
-          <MainContent>
-            <Heading>{headingText}</Heading>
-            <FormContainer>
-              <SocialButtonsContainer>
-                {socialButtons.map((socialButton, index) => (
-                  <SocialButton key={index} href={socialButton.url}>
-                    <span className="iconContainer">
-                      <img
-                        src={socialButton.iconImageSrc}
-                        className="icon"
-                        alt=""
-                      />
-                    </span>
-                    <span className="text">{socialButton.text}</span>
-                  </SocialButton>
-                ))}
-              </SocialButtonsContainer>
-              <DividerTextContainer>
-                <DividerText>Or Sign up with your e-mail</DividerText>
-              </DividerTextContainer>
-              <Form>
-                <Input type="email" placeholder="Email" />
-                <Input type="password" placeholder="Password" />
-                <SubmitButton type="submit">
-                  <SubmitButtonIcon className="icon" />
-                  <span className="text">{submitButtonText}</span>
-                </SubmitButton>
-                <p tw="mt-6 text-xs text-gray-600 text-center">
-                  I agree to abide by Lost-Found{" "}
-                  <a href={tosUrl} tw="border-b border-gray-500 border-dotted">
-                    Terms of Service
-                  </a>{" "}
-                  and its{" "}
-                  <a
-                    href={privacyPolicyUrl}
-                    tw="border-b border-gray-500 border-dotted"
-                  >
-                    Privacy Policy
-                  </a>
-                </p>
+    // const email = event.target.value;
+    // const password = event.target.value;
+    // };
+    window.alert("The form data is " + JSON.stringify(this.state));
+    // console.log(email);
+    event.preventDefault();
+  };
 
-                <p tw="mt-8 text-sm text-gray-600 text-center">
-                  Already have an account?{" "}
-                  {/* <a
+  render(
+    logoLinkUrl = "#",
+    illustrationImageSrc = illustration,
+    headingText = "Create Account For Lost-Found",
+    socialButtons = [
+      {
+        iconImageSrc: googleIconImageSrc,
+        text: "Sign Up With Google",
+        url: "https://google.com",
+      },
+      {
+        iconImageSrc: twitterIconImageSrc,
+        text: "Sign Up With Twitter",
+        url: "https://twitter.com",
+      },
+    ],
+    submitButtonText = "Sign Up",
+    SubmitButtonIcon = SignUpIcon,
+    tosUrl = "#",
+    privacyPolicyUrl = "#"
+  ) {
+    return (
+      <AnimationRevealPage>
+        {/* <Navbar roundedHeaderButton={true} /> */}
+        <Header roundedHeaderButton={true} />
+
+        <Container>
+          <Content>
+            <MainContainer>
+              <LogoLink href={logoLinkUrl}>
+                <LogoImage src={logo} />
+              </LogoLink>
+              <MainContent>
+                <Heading>{headingText}</Heading>
+                <FormContainer>
+                  <SocialButtonsContainer>
+                    {socialButtons.map((socialButton, index) => (
+                      <SocialButton key={index} href={socialButton.url}>
+                        <span className="iconContainer">
+                          <img
+                            src={socialButton.iconImageSrc}
+                            className="icon"
+                            alt=""
+                          />
+                        </span>
+                        <span className="text">{socialButton.text}</span>
+                      </SocialButton>
+                    ))}
+                  </SocialButtonsContainer>
+                  <DividerTextContainer>
+                    <DividerText>Or Sign up with your e-mail</DividerText>
+                  </DividerTextContainer>
+                  <Form onSubmit={this.onSubmitHandler}>
+                    <Input
+                      type="text"
+                      placeholder="Name"
+                      name="name"
+                      value={this.state.name}
+                      onChange={this.onChangeHandler}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Mobile Number"
+                      name="mobileNo"
+                      value={this.state.mobileNo}
+                      onChange={this.onChangeHandler}
+                    />
+                    <Input
+                      type="email"
+                      placeholder="Email"
+                      name="email"
+                      value={this.state.email}
+                      onChange={this.onChangeHandler}
+                    />
+                    <Input
+                      type="password"
+                      placeholder="Password"
+                      name="password"
+                      value={this.state.password}
+                      onChange={this.onChangeHandler}
+                    />
+                    <SubmitButton type="submit">
+                      <SubmitButtonIcon className="icon" />
+                      <span className="text">{submitButtonText}</span>
+                    </SubmitButton>
+                    <p tw="mt-6 text-xs text-gray-600 text-center">
+                      I agree to abide by Lost-Found{" "}
+                      <a
+                        href={tosUrl}
+                        tw="border-b border-gray-500 border-dotted"
+                      >
+                        Terms of Service
+                      </a>{" "}
+                      and its{" "}
+                      <a
+                        href={privacyPolicyUrl}
+                        tw="border-b border-gray-500 border-dotted"
+                      >
+                        Privacy Policy
+                      </a>
+                    </p>
+
+                    <p tw="mt-8 text-sm text-gray-600 text-center">
+                      Already have an account?{" "}
+                      {/* <a
                     href={signInUrl}
                     tw="border-b border-gray-500 border-dotted"
                   > */}
-                  <Link to="/login">Sign In</Link>
-                  {/* </a> */}
-                </p>
-              </Form>
-            </FormContainer>
-          </MainContent>
-        </MainContainer>
-        <IllustrationContainer>
-          <IllustrationImage imageSrc={illustrationImageSrc} />
-        </IllustrationContainer>
-      </Content>
-    </Container>
-  </AnimationRevealPage>
-);
+                      <Link to="/login">Sign In</Link>
+                      {/* </a> */}
+                    </p>
+                  </Form>
+                </FormContainer>
+              </MainContent>
+            </MainContainer>
+            <IllustrationContainer>
+              <IllustrationImage imageSrc={illustrationImageSrc} />
+            </IllustrationContainer>
+          </Content>
+        </Container>
+      </AnimationRevealPage>
+    );
+  }
+}
+// export default ({
+//   // roundedHeaderButton = "",
+
+//   // signInUrl = "#",
+// }) => (
+
+// );

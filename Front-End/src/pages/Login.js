@@ -67,26 +67,28 @@ class Login extends Component {
     super(props);
     this.state = {
       email: "",
-      passoword: "",
+      password: "",
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
   }
 
   onChangeHandler(event) {
+    let target = event.target;
+    let value = target.value;
+    let name = target.name;
     this.setState({
-      email: event.target.value,
-      passoword: event.target.value,
+      [name]: value,
     });
   }
   onSubmitHandler = (event) => {
-    event.preventDefault();
     // const data = {
-    const email = event.target.value;
-    const passoword = event.target.value;
+    // const email = event.target.value;
+    // const password = event.target.value;
     // };
-    window.alert("The form data is" + this.state);
+    window.alert("The form data is " + JSON.stringify(this.state));
     // console.log(email);
+    event.preventDefault();
   };
 
   render(
