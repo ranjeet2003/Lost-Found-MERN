@@ -141,9 +141,9 @@ export default function App() {
         <Route path="/lost-something" exact>
           <LostSomething />
         </Route>
-        <Route path="/about" exact>
+        {/* <Route path="/about" exact>
           <About />
-        </Route>
+        </Route> */}
         <Route path="/found-something" exact>
           <FoundSomething />
         </Route>

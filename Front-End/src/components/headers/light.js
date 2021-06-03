@@ -88,7 +88,7 @@ export default ({
   const defaultLinks = [
     <NavLinks key={1}>
       {/* <NavLink to="/login">Login </NavLink> */}
-      <Link to="/about">About </Link>
+      {/* <Link to="/about">About </Link> */}
 
       <Link to="/lost-something" tw="lg:ml-12!">
         Lost Something{" "}
