@@ -9,18 +9,18 @@ import Features from "components/features/ThreeColWithSideImage";
 import MainFeature from "components/features/TwoColWithButton.js";
 import MainFeature2 from "components/features/TwoColWithTwoHorizontalFeaturesAndButton.js";
 import FeatureWithSteps from "components/features/TwoColWithSteps.js";
-import Pricing from "components/pricing/ThreePlans.js";
+// import Pricing from "components/pricing/ThreePlans.js";
 import Testimonial from "components/testimonials/TwoColumnWithImageAndRating.js";
 import FAQ from "components/faqs/SingleCol.js";
 // import GetStarted from "components/cta/GetStarted";
 import Footer from "components/footers/SimpleFiveColumn";
-import heroScreenshotImageSrc from "images/hero-screenshot-1.png";
+// import heroScreenshotImageSrc from "images/hero-screenshot-1.png";
 import heroScreenshotImageSrc1 from "images/logo1.jpg";
 // import macHeroScreenshotImageSrc from "images/hero-screenshot-2.png";
 import aboutImage from "images/about.png";
 import donateImageSrc from "images/donate.jpg";
-import { ReactComponent as BriefcaseIcon } from "feather-icons/dist/icons/briefcase.svg";
-import { ReactComponent as MoneyIcon } from "feather-icons/dist/icons/dollar-sign.svg";
+// import { ReactComponent as BriefcaseIcon } from "feather-icons/dist/icons/briefcase.svg";
+// import { ReactComponent as MoneyIcon } from "feather-icons/dist/icons/dollar-sign.svg";
 
 export default () => {
   const Subheading = tw.span`uppercase tracking-widest font-bold text-primary-500`;

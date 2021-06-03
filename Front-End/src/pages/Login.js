@@ -192,25 +192,25 @@ class Login extends Component {
 
 export default Login;
 
-const collapseBreakPointCssMap = {
-  sm: {
-    mobileNavLinks: tw`sm:hidden`,
-    desktopNavLinks: tw`sm:flex`,
-    mobileNavLinksContainer: tw`sm:hidden`,
-  },
-  md: {
-    mobileNavLinks: tw`md:hidden`,
-    desktopNavLinks: tw`md:flex`,
-    mobileNavLinksContainer: tw`md:hidden`,
-  },
-  lg: {
-    mobileNavLinks: tw`lg:hidden`,
-    desktopNavLinks: tw`lg:flex`,
-    mobileNavLinksContainer: tw`lg:hidden`,
-  },
-  xl: {
-    mobileNavLinks: tw`lg:hidden`,
-    desktopNavLinks: tw`lg:flex`,
-    mobileNavLinksContainer: tw`lg:hidden`,
-  },
-};
+// const collapseBreakPointCssMap = {
+//   sm: {
+//     mobileNavLinks: tw`sm:hidden`,
+//     desktopNavLinks: tw`sm:flex`,
+//     mobileNavLinksContainer: tw`sm:hidden`,
+//   },
+//   md: {
+//     mobileNavLinks: tw`md:hidden`,
+//     desktopNavLinks: tw`md:flex`,
+//     mobileNavLinksContainer: tw`md:hidden`,
+//   },
+//   lg: {
+//     mobileNavLinks: tw`lg:hidden`,
+//     desktopNavLinks: tw`lg:flex`,
+//     mobileNavLinksContainer: tw`lg:hidden`,
+//   },
+//   xl: {
+//     mobileNavLinks: tw`lg:hidden`,
+//     desktopNavLinks: tw`lg:flex`,
+//     mobileNavLinksContainer: tw`lg:hidden`,
+//   },
+// };

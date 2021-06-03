@@ -109,7 +109,7 @@ import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Signup";
 import LostSomething from "./components/forms/LostSomething";
 import FoundSomething from "./components/forms/FoundSomething";
-import About from "./pages/AboutUs";
+// import About from "./pages/AboutUs";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
