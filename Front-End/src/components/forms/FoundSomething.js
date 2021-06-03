@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
@@ -42,62 +42,95 @@ const Textarea = styled(Input).attrs({ as: "textarea" })`
 
 const SubmitButton = tw(PrimaryButtonBase)`inline-block mt-8`;
 
-export default ({
-  subheading = "Found Some Docs",
-  heading = (
-    <>
-      Feel free to upload the details of{" "}
-      <span tw="text-primary-500">Found docs</span>
-      <wbr /> .
-    </>
-  ),
-  description = "Please upload the details of document that you've found and make sure all details are correct and image is clear because we will use these details to match your docs.",
-  submitButtonText = "Upload Data",
-  formAction = "#",
-  formMethod = "get",
-  textOnLeft = true,
-}) => {
-  // The textOnLeft boolean prop can be used to display either the text on left or right side of the image.
+export default class FoundSomething extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      docName: "",
+      docSerial: "",
+      docDescription: "",
+      docImage: "",
+    };
+    this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.onSubmitHandler = this.onSubmitHandler.bind(this);
+  }
 
-  return (
-    <AnimationRevealPage>
-      <Header roundedHeaderButton={true} />
-      <Container>
-        <TwoColumn>
-          <ImageColumn>
-            <Image imageSrc={EmailIllustrationSrc} />
-          </ImageColumn>
-          <TextColumn textOnLeft={textOnLeft}>
-            <TextContent>
-              {subheading && <Subheading>{subheading}</Subheading>}
-              <Heading>{heading}</Heading>
-              {description && <Description>{description}</Description>}
-              <Form action={formAction} method={formMethod}>
-                <Input
-                  type="text"
-                  name="docName"
-                  placeholder="Document Name e.g marksheet."
-                />
-                <Input
-                  type="text"
-                  name="docSerial"
-                  placeholder="Enter any serial number or unique number."
-                />
-                <Input
-                  type="text"
-                  name="docDescription"
-                  placeholder="Describe something about that doc."
-                />
-                <Input
-                  type="file"
-                  placeholder="Upload image of lost document"
-                />
-                <SubmitButton type="submit">{submitButtonText}</SubmitButton>
-              </Form>
-            </TextContent>
-          </TextColumn>
-        </TwoColumn>
-      </Container>
-    </AnimationRevealPage>
-  );
-};
+  onChangeHandler(event) {
+    let target = event.target;
+    let value = target.value;
+    let name = target.name;
+    this.setState({
+      [name]: value,
+    });
+  }
+  onSubmitHandler = (event) => {
+    window.alert("The form data is " + JSON.stringify(this.state));
+    event.preventDefault();
+  };
+
+  render(
+    subheading = "Found Some Docs",
+    heading = (
+      <>
+        Feel free to upload the details of{" "}
+        <span tw="text-primary-500">Found docs</span>
+        <wbr /> .
+      </>
+    ),
+    description = "Please upload the details of document that you've found and make sure all details are correct and image is clear because we will use these details to match your docs.",
+    submitButtonText = "Upload Data",
+    formAction = "#",
+    formMethod = "get",
+    textOnLeft = true
+  ) {
+    return (
+      <AnimationRevealPage>
+        <Header roundedHeaderButton={true} />
+        <Container>
+          <TwoColumn>
+            <ImageColumn>
+              <Image imageSrc={EmailIllustrationSrc} />
+            </ImageColumn>
+            <TextColumn textOnLeft={textOnLeft}>
+              <TextContent>
+                {subheading && <Subheading>{subheading}</Subheading>}
+                <Heading>{heading}</Heading>
+                {description && <Description>{description}</Description>}
+                <Form onSubmit={this.onSubmitHandler}>
+                  <Input
+                    type="text"
+                    name="docName"
+                    placeholder="Document Name e.g marksheet."
+                    value={this.state.docName}
+                    onChange={this.onChangeHandler}
+                  />
+                  <Input
+                    type="text"
+                    name="docSerial"
+                    placeholder="Enter any serial number or unique number."
+                    value={this.state.docSerial}
+                    onChange={this.onChangeHandler}
+                  />
+                  <Input
+                    type="text"
+                    name="docDescription"
+                    placeholder="Describe something about that doc."
+                    value={this.state.docDescription}
+                    onChange={this.onChangeHandler}
+                  />
+                  <Input
+                    type="file"
+                    placeholder="Upload image of lost document"
+                    value={this.state.file}
+                    onChange={this.onChangeHandler}
+                  />
+                  <SubmitButton type="submit">{submitButtonText}</SubmitButton>
+                </Form>
+              </TextContent>
+            </TextColumn>
+          </TwoColumn>
+        </Container>
+      </AnimationRevealPage>
+    );
+  }
+}
