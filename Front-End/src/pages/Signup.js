@@ -8,7 +8,7 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 import illustration from "images/signup-illustration.svg";
 import logo from "images/logo-new.jpg";
 // import SweetAlert from "../helpers/SweetAlert";
-import ErrorMode from "../helpers/ErrorModal";
+import ErrorModel from "../helpers/ErrorModal";
 import Spinner from "../helpers/LoadingSpinner";
 
 import googleIconImageSrc from "images/google-icon.png";
@@ -70,7 +70,7 @@ export default class Signup extends Component {
       email: "",
       password: "",
       isLoading: false,
-      isError: true,
+      isError: null,
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -84,6 +84,9 @@ export default class Signup extends Component {
       [name]: value,
     });
   }
+  errorHandler = () => {
+    this.setState({ isError: null });
+  };
   onSubmitHandler = async (event) => {
     event.preventDefault();
     // window.alert("The form data is " + JSON.stringify(this.state));
@@ -104,6 +107,9 @@ export default class Signup extends Component {
         }),
       });
       const responseData = await response.json();
+      if (!response.ok) {
+        throw new Error(responseData.message);
+      }
       console.log(responseData);
       // window.alert("Signup Succesfull !" + JSON.stringify(responseData));
       // <SweetAlert />;
@@ -139,6 +145,7 @@ export default class Signup extends Component {
   ) {
     return (
       <>
+        <ErrorModel error={this.state.isError} onClear={this.errorHandler} />
         <AnimationRevealPage>
           {/* <Navbar roundedHeaderButton={true} /> */}
           <Header roundedHeaderButton={true} />
