@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const placesRoutes = require("./routes/places-routes");
+const docRoutes = require("./routes/doc-routes");
 const usersRoutes = require("./routes/users-routes");
 const HttpError = require("./models/http-error");
 
@@ -10,7 +10,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use("/api/places", placesRoutes);
+app.use("/api/places", docRoutes);
 app.use("/api/users", usersRoutes);
 
 app.use((req, res, next) => {
@@ -32,7 +32,7 @@ mongoose
   )
   .then(() => {
     console.log("Connected to MongoDB");
-    app.listen(5000);
+    app.listen(5555);
   })
   .catch((err) => {
     console.log(err);
