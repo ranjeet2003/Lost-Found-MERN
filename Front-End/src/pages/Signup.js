@@ -79,10 +79,29 @@ export default class Signup extends Component {
       [name]: value,
     });
   }
-  onSubmitHandler = (event) => {
-    window.alert("The form data is " + JSON.stringify(this.state));
-    // console.log(email);
+  onSubmitHandler = async (event) => {
     event.preventDefault();
+    // window.alert("The form data is " + JSON.stringify(this.state));
+    // console.log(email);
+    try {
+      const response = await fetch("http://localhost:5555/api/users/signup", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          name: this.state.name,
+          email: this.state.email,
+          mobile: this.state.mobileNo,
+          password: this.state.password,
+        }),
+      });
+      const responseData = await response.json();
+      console.log(responseData);
+      window.alert("Signup Succesfull !" + JSON.stringify(responseData));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   render(
