@@ -7,6 +7,9 @@ import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
 import illustration from "images/signup-illustration.svg";
 import logo from "images/logo-new.jpg";
+// import SweetAlert from "../helpers/SweetAlert";
+import ErrorMode from "../helpers/ErrorModal";
+import Spinner from "../helpers/LoadingSpinner";
 
 import googleIconImageSrc from "images/google-icon.png";
 import twitterIconImageSrc from "images/twitter-icon.png";
@@ -66,6 +69,8 @@ export default class Signup extends Component {
       mobileNo: "",
       email: "",
       password: "",
+      isLoading: false,
+      isError: true,
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -84,6 +89,8 @@ export default class Signup extends Component {
     // window.alert("The form data is " + JSON.stringify(this.state));
     // console.log(email);
     try {
+      this.setState({ isLoading: true });
+      // this.setState({isError: null})
       const response = await fetch("http://localhost:5555/api/users/signup", {
         method: "POST",
         headers: {
@@ -98,10 +105,15 @@ export default class Signup extends Component {
       });
       const responseData = await response.json();
       console.log(responseData);
-      window.alert("Signup Succesfull !" + JSON.stringify(responseData));
+      // window.alert("Signup Succesfull !" + JSON.stringify(responseData));
+      // <SweetAlert />;
     } catch (err) {
       console.log(err);
+      this.setState({
+        isError: err.message || "Something Went Wrong, Please Try Again Later",
+      });
     }
+    this.setState({ isLoading: false });
   };
 
   render(
@@ -126,105 +138,108 @@ export default class Signup extends Component {
     privacyPolicyUrl = "#"
   ) {
     return (
-      <AnimationRevealPage>
-        {/* <Navbar roundedHeaderButton={true} /> */}
-        <Header roundedHeaderButton={true} />
+      <>
+        <AnimationRevealPage>
+          {/* <Navbar roundedHeaderButton={true} /> */}
+          <Header roundedHeaderButton={true} />
 
-        <Container>
-          <Content>
-            <MainContainer>
-              <LogoLink href={logoLinkUrl}>
-                <LogoImage src={logo} />
-              </LogoLink>
-              <MainContent>
-                <Heading>{headingText}</Heading>
-                <FormContainer>
-                  <SocialButtonsContainer>
-                    {socialButtons.map((socialButton, index) => (
-                      <SocialButton key={index} href={socialButton.url}>
-                        <span className="iconContainer">
-                          <img
-                            src={socialButton.iconImageSrc}
-                            className="icon"
-                            alt=""
-                          />
-                        </span>
-                        <span className="text">{socialButton.text}</span>
-                      </SocialButton>
-                    ))}
-                  </SocialButtonsContainer>
-                  <DividerTextContainer>
-                    <DividerText>Or Sign up with your e-mail</DividerText>
-                  </DividerTextContainer>
-                  <Form onSubmit={this.onSubmitHandler}>
-                    <Input
-                      type="text"
-                      placeholder="Name"
-                      name="name"
-                      value={this.state.name}
-                      onChange={this.onChangeHandler}
-                    />
-                    <Input
-                      type="email"
-                      placeholder="Email"
-                      name="email"
-                      value={this.state.email}
-                      onChange={this.onChangeHandler}
-                    />
-                    <Input
-                      type="text"
-                      placeholder="Mobile Number"
-                      name="mobileNo"
-                      value={this.state.mobileNo}
-                      onChange={this.onChangeHandler}
-                    />
-                    <Input
-                      type="password"
-                      placeholder="Password"
-                      name="password"
-                      value={this.state.password}
-                      onChange={this.onChangeHandler}
-                    />
-                    <SubmitButton type="submit">
-                      <SubmitButtonIcon className="icon" />
-                      <span className="text">{submitButtonText}</span>
-                    </SubmitButton>
-                    <p tw="mt-6 text-xs text-gray-600 text-center">
-                      I agree to abide by Lost-Found{" "}
-                      <a
-                        href={tosUrl}
-                        tw="border-b border-gray-500 border-dotted"
-                      >
-                        Terms of Service
-                      </a>{" "}
-                      and its{" "}
-                      <a
-                        href={privacyPolicyUrl}
-                        tw="border-b border-gray-500 border-dotted"
-                      >
-                        Privacy Policy
-                      </a>
-                    </p>
+          <Container>
+            {this.state.isLoading && <Spinner asOverlay />}
+            <Content>
+              <MainContainer>
+                <LogoLink href={logoLinkUrl}>
+                  <LogoImage src={logo} />
+                </LogoLink>
+                <MainContent>
+                  <Heading>{headingText}</Heading>
+                  <FormContainer>
+                    <SocialButtonsContainer>
+                      {socialButtons.map((socialButton, index) => (
+                        <SocialButton key={index} href={socialButton.url}>
+                          <span className="iconContainer">
+                            <img
+                              src={socialButton.iconImageSrc}
+                              className="icon"
+                              alt=""
+                            />
+                          </span>
+                          <span className="text">{socialButton.text}</span>
+                        </SocialButton>
+                      ))}
+                    </SocialButtonsContainer>
+                    <DividerTextContainer>
+                      <DividerText>Or Sign up with your e-mail</DividerText>
+                    </DividerTextContainer>
+                    <Form onSubmit={this.onSubmitHandler}>
+                      <Input
+                        type="text"
+                        placeholder="Name"
+                        name="name"
+                        value={this.state.name}
+                        onChange={this.onChangeHandler}
+                      />
+                      <Input
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        value={this.state.email}
+                        onChange={this.onChangeHandler}
+                      />
+                      <Input
+                        type="text"
+                        placeholder="Mobile Number"
+                        name="mobileNo"
+                        value={this.state.mobileNo}
+                        onChange={this.onChangeHandler}
+                      />
+                      <Input
+                        type="password"
+                        placeholder="Password"
+                        name="password"
+                        value={this.state.password}
+                        onChange={this.onChangeHandler}
+                      />
+                      <SubmitButton type="submit">
+                        <SubmitButtonIcon className="icon" />
+                        <span className="text">{submitButtonText}</span>
+                      </SubmitButton>
+                      <p tw="mt-6 text-xs text-gray-600 text-center">
+                        I agree to abide by Lost-Found{" "}
+                        <a
+                          href={tosUrl}
+                          tw="border-b border-gray-500 border-dotted"
+                        >
+                          Terms of Service
+                        </a>{" "}
+                        and its{" "}
+                        <a
+                          href={privacyPolicyUrl}
+                          tw="border-b border-gray-500 border-dotted"
+                        >
+                          Privacy Policy
+                        </a>
+                      </p>
 
-                    <p tw="mt-8 text-sm text-gray-600 text-center">
-                      Already have an account?{" "}
-                      {/* <a
+                      <p tw="mt-8 text-sm text-gray-600 text-center">
+                        Already have an account?{" "}
+                        {/* <a
                     href={signInUrl}
                     tw="border-b border-gray-500 border-dotted"
                   > */}
-                      <Link to="/login">Sign In</Link>
-                      {/* </a> */}
-                    </p>
-                  </Form>
-                </FormContainer>
-              </MainContent>
-            </MainContainer>
-            <IllustrationContainer>
-              <IllustrationImage imageSrc={illustrationImageSrc} />
-            </IllustrationContainer>
-          </Content>
-        </Container>
-      </AnimationRevealPage>
+                        <Link to="/login">Sign In</Link>
+                        {/* </a> */}
+                      </p>
+                    </Form>
+                  </FormContainer>
+                </MainContent>
+              </MainContainer>
+              <IllustrationContainer>
+                <IllustrationImage imageSrc={illustrationImageSrc} />
+              </IllustrationContainer>
+            </Content>
+          </Container>
+        </AnimationRevealPage>
+      </>
     );
   }
 }
