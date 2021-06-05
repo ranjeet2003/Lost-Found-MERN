@@ -80,11 +80,6 @@ export default class Signup extends Component {
     });
   }
   onSubmitHandler = (event) => {
-    // const data = {
-
-    // const email = event.target.value;
-    // const password = event.target.value;
-    // };
     window.alert("The form data is " + JSON.stringify(this.state));
     // console.log(email);
     event.preventDefault();
@@ -151,17 +146,17 @@ export default class Signup extends Component {
                       onChange={this.onChangeHandler}
                     />
                     <Input
-                      type="text"
-                      placeholder="Mobile Number"
-                      name="mobileNo"
-                      value={this.state.mobileNo}
-                      onChange={this.onChangeHandler}
-                    />
-                    <Input
                       type="email"
                       placeholder="Email"
                       name="email"
                       value={this.state.email}
+                      onChange={this.onChangeHandler}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Mobile Number"
+                      name="mobileNo"
+                      value={this.state.mobileNo}
                       onChange={this.onChangeHandler}
                     />
                     <Input
