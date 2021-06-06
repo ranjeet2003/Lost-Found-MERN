@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
+import FileBase from 'react-file-base64';
 import { css } from "styled-components/macro"; //eslint-disable-line
 import {
   SectionHeading,
@@ -50,6 +51,8 @@ export default class FoundSomething extends Component {
       docSerial: "",
       docDescription: "",
       docImage: "",
+      isLoading: false,
+      isError: null
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -63,10 +66,57 @@ export default class FoundSomething extends Component {
       [name]: value,
     });
   }
-  onSubmitHandler = (event) => {
-    window.alert("The form data is " + JSON.stringify(this.state));
+  onSubmitHandler = async (event) => {
+    // window.alert("The form data is " + JSON.stringify(this.state));
     event.preventDefault();
+
+    try {
+      this.setState({ ...this.state, isLoading: true });
+      const res = await fetch('http://localhost:5555/api/docs', {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          name: this.state.docName,
+          serial: this.state.docSerial,
+          description: this.state.docDescription,
+          image: this.state.docImage,
+          isLost: false
+        }),
+      });
+      
+      const responseData = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(responseData.message);
+      }
+      this.setState({
+        docName: "",
+        docSerial: "",
+        docDescription: "",
+        docImage: "",  
+      })
+      console.log(responseData);
+    }
+     catch (err) {
+      console.log(err);
+      this.setState({
+        ...this.state, 
+        isError: err.message || "Something Went Wrong, Please Try Again Later",
+      });
+    }
+    this.setState({ ...this.state, isLoading: false });
   };
+
+
+  fileHandler(file) {
+    this.setState({
+      ...this.state,
+      docImage: file.base64
+    })
+  }
+
 
   render(
     subheading = "Found Some Docs",
@@ -118,13 +168,9 @@ export default class FoundSomething extends Component {
                     value={this.state.docDescription}
                     onChange={this.onChangeHandler}
                   />
-                  <Input
-                    type="file"
-                    placeholder="Upload image of lost document"
-                    value={this.state.file}
-                    onChange={this.onChangeHandler}
-                  />
-                  <SubmitButton type="submit">{submitButtonText}</SubmitButton>
+                  <br />
+                  <FileBase onDone={(file) => this.fileHandler(file)}/>
+                   <SubmitButton type="submit">{!this.state.isLoading ? submitButtonText : "Uploading data..."}</SubmitButton>
                 </Form>
               </TextContent>
             </TextColumn>
