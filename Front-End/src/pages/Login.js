@@ -73,6 +73,7 @@ class Login extends Component {
       password: "",
       isLoading: false,
       isError: null,
+      username: "",
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -99,9 +100,7 @@ class Login extends Component {
           "Content-type": "application/json",
         },
         body: JSON.stringify({
-          // name: this.state.name,
           email: this.state.email,
-          // mobile: this.state.mobileNo,
           password: this.state.password,
         }),
       });
@@ -109,7 +108,9 @@ class Login extends Component {
       if (!response.ok) {
         throw new Error(responseData.message);
       }
-      console.log(responseData);
+      // console.log(responseData);
+      this.setState({ username: responseData.name });
+      // console.log(this.state.username);
     } catch (err) {
       console.log(err);
       this.setState({
@@ -143,7 +144,7 @@ class Login extends Component {
       <>
         <ErrorModel error={this.state.isError} onClear={this.errorHandler} />
         <AnimationRevealPage>
-          <Header roundedHeaderButton={true} />
+          <Header roundedHeaderButton={true} name={this.state.username} />
           <Container>
             {this.state.isLoading && <Spinner asOverlay />}
 

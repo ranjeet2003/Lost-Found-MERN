@@ -46,10 +46,10 @@ const TwoColumn = tw.div`py-2 `;
 //   }
 // `;
 
-export default ({ roundedHeaderButton }) => {
+export default ({ roundedHeaderButton, name }) => {
   return (
     <>
-      <Header roundedHeaderButton={roundedHeaderButton} />
+      <Header roundedHeaderButton={roundedHeaderButton} name={name} />
       <TwoColumn>{/* <LeftColumn></LeftColumn> */}</TwoColumn>
     </>
   );

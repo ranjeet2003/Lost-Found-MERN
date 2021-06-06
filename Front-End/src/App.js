@@ -110,6 +110,7 @@ import SignupPage from "./pages/Signup";
 import LostSomething from "./components/forms/LostSomething";
 import FoundSomething from "./components/forms/FoundSomething";
 // import About from "./pages/AboutUs";
+import About1 from "./components/cards/AboutUsCard";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -141,9 +142,9 @@ export default function App() {
         <Route path="/lost-something" exact>
           <LostSomething />
         </Route>
-        {/* <Route path="/about" exact>
-          <About />
-        </Route> */}
+        <Route path="/about" exact>
+          <About1 />
+        </Route>
         <Route path="/found-something" exact>
           <FoundSomething />
         </Route>

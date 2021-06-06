@@ -71,24 +71,28 @@ export default ({
   links,
   className,
   collapseBreakpointClass = "lg",
+  name,
 }) => {
-  /*
-   * This header component accepts an optionals "links" prop that specifies the links to render in the navbar.
-   * This links props should be an array of "NavLinks" components which is exported from this file.
-   * Each "NavLinks" component can contain any amount of "NavLink" component, also exported from this file.
-   * This allows this Header to be multi column.
-   * So If you pass only a single item in the array with only one NavLinks component as root, you will get 2 column header.
-   * Left part will be LogoLink, and the right part will be the the NavLinks component you
-   * supplied.
-   * Similarly if you pass 2 items in the links array, then you will get 3 columns, the left will be "LogoLink", the center will be the first "NavLinks" component in the array and the right will be the second "NavLinks" component in the links array.
-   * You can also choose to directly modify the links here by not passing any links from the parent component and
-   * changing the defaultLinks variable below below.
-   * If you manipulate links here, all the styling on the links is already done for you. If you pass links yourself though, you are responsible for styling the links or use the helper styled components that are defined here (NavLink)
-   */
+  console.log(name);
+  const loginSignuoLinks = (
+    <>
+      {" "}
+      <Link to="/login" tw="lg:ml-12!">
+        Login
+      </Link>
+      <Link
+        css={roundedHeaderButton && tw`rounded-full lg:ml-12!`}
+        to="/signup"
+      >
+        Sign Up
+      </Link>{" "}
+    </>
+  );
+  // const signedLink = name !== "" ? loginSignuoLinks : name;
   const defaultLinks = [
     <NavLinks key={1}>
       {/* <NavLink to="/login">Login </NavLink> */}
-      {/* <Link to="/about">About </Link> */}
+      <Link to="/about">About </Link>
 
       <Link to="/lost-something" tw="lg:ml-12!">
         Lost Something{" "}
@@ -98,7 +102,7 @@ export default ({
         Found Something{" "}
       </Link>
       {/* <NavLink href="/#">Contact Us</NavLink> */}
-      <Link to="/login" tw="lg:ml-12!">
+      {/* <Link to="/login" tw="lg:ml-12!">
         Login
       </Link>
       <Link
@@ -106,7 +110,9 @@ export default ({
         to="/signup"
       >
         Sign Up
-      </Link>
+      </Link> */}
+      {/* <Link to="/login">{signedLink}</Link> */}
+      {loginSignuoLinks}
     </NavLinks>,
   ];
 
