@@ -20,7 +20,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/places", docRoutes);
+app.use("/api/docs", docRoutes);
 app.use("/api/users", usersRoutes);
 
 app.use((req, res, next) => {
