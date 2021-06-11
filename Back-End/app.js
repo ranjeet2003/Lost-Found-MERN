@@ -38,7 +38,11 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    "mongodb+srv://ranjeet:ranjeet7537@cluster0.kxva0.mongodb.net/LFDetails?retryWrites=true&w=majority"
+    "mongodb+srv://ranjeet:ranjeet7537@cluster0.kxva0.mongodb.net/LFDetails?retryWrites=true&w=majority",
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    (err) => {
+      console.log("Connection Succesfull");
+    }
   )
   .then(() => {
     console.log("Connected to MongoDB");
