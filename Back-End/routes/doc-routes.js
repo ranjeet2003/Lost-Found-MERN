@@ -1,16 +1,16 @@
-const express = require('express');
-const { check } = require('express-validator');
+const express = require("express");
+const { check } = require("express-validator");
 
-const documentControllers = require('../controllers/document-controllers');
+const documentControllers = require("../controllers/document-controllers");
 
 const router = express.Router();
 
-router.get('/', documentControllers.getDocuments);
-router.get('/:did', documentControllers.getDocumentById);
+router.get("/", documentControllers.getDocuments);
+router.get("/:did", documentControllers.getDocumentById);
 
 // router.get('/user/:uid', placesControllers.getPlacesByUserId);
 
-router.post('/', documentControllers.createDocument);
+router.post("/", documentControllers.createDocument);
 
 // router.patch(
 //   '/:pid',

@@ -10,6 +10,7 @@ const userSchema = new Schema({
   image: { type: String, required: true },
   docs: [{ type: mongoose.Types.ObjectId, required: true, ref: "Place" }],
   mobile: { type: String, required: true, minlength: 10, maxlength: 10 },
+  // signed: { type: Boolean },
 });
 
 userSchema.plugin(uniqueValidator);

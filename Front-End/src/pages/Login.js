@@ -1,5 +1,6 @@
 import { React, Component } from "react";
 import { Link } from "react-router-dom";
+// import { hashHistory } from "react-router";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import { Container as ContainerBase } from "components/misc/Layouts";
 import Header from "components/hero/CustomHeader.js";
@@ -11,6 +12,9 @@ import logo from "images/logo-new.jpg";
 import googleIconImageSrc from "images/google-icon.png";
 import twitterIconImageSrc from "images/twitter-icon.png";
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
+import SweetAlert from "react-bootstrap-sweetalert";
+import Alert from "../helpers/Alert";
+
 // import Header from "../components/headers/light";
 
 import ErrorModel from "../helpers/ErrorModal";
@@ -65,6 +69,14 @@ export const DesktopNavLinks = tw.nav`
   hidden lg:flex flex-1 justify-between items-center
 `;
 
+// const LoginAlert = (
+//   <>
+//     <SweetAlert success title="Woot!" onConfirm={this.hideAlert}>
+//       I did it!
+//     </SweetAlert>
+//   </>
+// );
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -74,9 +86,11 @@ class Login extends Component {
       isLoading: false,
       isError: null,
       username: "",
+      alert: null,
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
+    // const history = useHistory();
   }
 
   onChangeHandler(event) {
@@ -87,9 +101,11 @@ class Login extends Component {
       [name]: value,
     });
   }
+
   errorHandler = () => {
     this.setState({ isError: null });
   };
+
   onSubmitHandler = async (event) => {
     event.preventDefault();
     try {
@@ -108,7 +124,8 @@ class Login extends Component {
       if (!response.ok) {
         throw new Error(responseData.message);
       }
-      // console.log(responseData);
+      console.log(responseData);
+
       this.setState({ username: responseData.name });
       // console.log(this.state.username);
     } catch (err) {

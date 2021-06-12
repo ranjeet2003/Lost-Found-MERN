@@ -11,6 +11,8 @@ import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 import EmailIllustrationSrc from "images/email-illustration.svg";
 import Header from "components/hero/CustomHeader.js";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
+import ErrorModel from "../../helpers/ErrorModal";
+import Spinner from "../../helpers/LoadingSpinner";
 
 const Container = tw.div`relative`;
 const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
@@ -67,6 +69,10 @@ export default class LostSomething extends Component {
       [name]: value,
     });
   }
+
+  errorHandler = () => {
+    this.setState({ isError: null });
+  };
 
   onSubmitHandler = async (event) => {
     event.preventDefault();

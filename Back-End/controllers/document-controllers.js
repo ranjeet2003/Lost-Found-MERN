@@ -1,26 +1,25 @@
-const uuid = require('uuid/v4');
-const { validationResult } = require('express-validator');
-const mongoose = require('mongoose');
+const uuid = require("uuid/v4");
+const { validationResult } = require("express-validator");
+const mongoose = require("mongoose");
 
-const HttpError = require('../models/http-error');
-const getCoordsForAddress = require('../util/location');
-const Document = require('../models/document');
-const User = require('../models/user');
+const HttpError = require("../models/http-error");
+// const getCoordsForAddress = require('../util/location');
+const Document = require("../models/document");
+const User = require("../models/user");
 
 const getDocuments = async (req, res, next) => {
   try {
     const documents = await Document.find({});
-    console.log(documents)
-    return res.status(201).json({documents});
+    console.log(documents);
+    return res.status(201).json({ documents });
   } catch (err) {
-   const error = new HttpError(
-      'Something went wrong, could not find documents.',
+    const error = new HttpError(
+      "Something went wrong, could not find documents.",
       500
     );
     return next(error);
   }
-}
-
+};
 
 const getDocumentById = async (req, res, next) => {
   const docId = req.params.did;
@@ -30,7 +29,7 @@ const getDocumentById = async (req, res, next) => {
     doc = await Document.findById(docId);
   } catch (err) {
     const error = new HttpError(
-      'Something went wrong, could not find a document.',
+      "Something went wrong, could not find a document.",
       500
     );
     return next(error);
@@ -38,7 +37,7 @@ const getDocumentById = async (req, res, next) => {
 
   if (!doc) {
     const error = new HttpError(
-      'Could not find a document for the provided id.',
+      "Could not find a document for the provided id.",
       404
     );
     return next(error);
@@ -80,12 +79,11 @@ const createDocument = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(
-      new HttpError('Invalid inputs passed, please check your data.', 422)
+      new HttpError("Invalid inputs passed, please check your data.", 422)
     );
   }
 
   const { name, serial, description, image, isLost } = req.body;
-
 
   // let user;
   // try {
@@ -100,13 +98,12 @@ const createDocument = async (req, res, next) => {
   //   return next(error);
   // }
 
-
   const createdDocument = new Document({
     name,
     serial,
     description,
     image,
-    isLost
+    isLost,
   });
 
   console.log(createdDocument);
@@ -135,7 +132,7 @@ const updatePlace = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(
-      new HttpError('Invalid inputs passed, please check your data.', 422)
+      new HttpError("Invalid inputs passed, please check your data.", 422)
     );
   }
 
@@ -147,7 +144,7 @@ const updatePlace = async (req, res, next) => {
     place = await Place.findById(placeId);
   } catch (err) {
     const error = new HttpError(
-      'Something went wrong, could not update place.',
+      "Something went wrong, could not update place.",
       500
     );
     return next(error);
@@ -160,7 +157,7 @@ const updatePlace = async (req, res, next) => {
     await place.save();
   } catch (err) {
     const error = new HttpError(
-      'Something went wrong, could not update place.',
+      "Something went wrong, could not update place.",
       500
     );
     return next(error);
@@ -174,17 +171,17 @@ const deletePlace = async (req, res, next) => {
 
   let place;
   try {
-    place = await Place.findById(placeId).populate('creator');
+    place = await Place.findById(placeId).populate("creator");
   } catch (err) {
     const error = new HttpError(
-      'Something went wrong, could not delete place.',
+      "Something went wrong, could not delete place.",
       500
     );
     return next(error);
   }
 
   if (!place) {
-    const error = new HttpError('Could not find place for this id.', 404);
+    const error = new HttpError("Could not find place for this id.", 404);
     return next(error);
   }
 
@@ -197,13 +194,13 @@ const deletePlace = async (req, res, next) => {
     await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError(
-      'Something went wrong, could not delete place.',
+      "Something went wrong, could not delete place.",
       500
     );
     return next(error);
   }
 
-  res.status(200).json({ message: 'Deleted place.' });
+  res.status(200).json({ message: "Deleted place." });
 };
 
 exports.getDocuments = getDocuments;
