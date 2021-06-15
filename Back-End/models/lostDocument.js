@@ -14,4 +14,4 @@ const documentSchema = new Schema({
   // },
 });
 
-module.exports = mongoose.model("Document", documentSchema);
+module.exports = mongoose.model("lostDocument", documentSchema);

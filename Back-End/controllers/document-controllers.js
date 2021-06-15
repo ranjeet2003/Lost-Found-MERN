@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 const HttpError = require("../models/http-error");
 // const getCoordsForAddress = require('../util/location');
-const Document = require("../models/document");
+const Document = require("../models/lostDocument");
 const User = require("../models/user");
 
 const getDocuments = async (req, res, next) => {

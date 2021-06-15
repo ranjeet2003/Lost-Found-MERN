@@ -1,7 +1,7 @@
 const { validationResult } = require("express-validator");
 
 const HttpError = require("../models/http-error");
-const Document = require("../models/document");
+const Document = require("../models/lostDocument");
 
 const multer = require("multer");
 const fs = require("fs");
@@ -9,7 +9,7 @@ const path = require("path");
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/AllDocs");
+    cb(null, "public/LostUpload");
   },
   filename: (req, file, cb) => {
     const ext = file.mimetype.split("/")[1];
@@ -39,7 +39,9 @@ const lostInfo = async (req, res, next) => {
     description: req.body.description,
     serial: req.body.serial,
     img: {
-      data: fs.readFileSync(path.join("public/AllDocs/" + req.file.filename)),
+      data: fs.readFileSync(
+        path.join("public/LostUpload/" + req.file.filename)
+      ),
       contentType: "image/png",
     },
   };
