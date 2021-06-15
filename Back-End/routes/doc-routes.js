@@ -2,7 +2,8 @@ const express = require("express");
 const { check } = require("express-validator");
 
 const documentControllers = require("../controllers/document-controllers");
-const docControllers = require("../controllers/docControllers");
+const lostDocControllers = require("../controllers/lostDocControllers");
+const foundDocController = require("../controllers/foundDocControllers");
 
 const router = express.Router();
 
@@ -26,6 +27,16 @@ router.post("/", documentControllers.createDocument);
 
 // router.delete('/:pid', placesControllers.deletePlace);
 
-router.post("/lostDocs", docControllers.uploadDocs, docControllers.lostInfo);
+router.post(
+  "/lostDocs",
+  lostDocControllers.uploadDocs,
+  lostDocControllers.lostInfo
+);
+
+router.post(
+  "/foundDocs",
+  foundDocController.uploadDocs,
+  foundDocController.foundInfo
+);
 
 module.exports = router;
