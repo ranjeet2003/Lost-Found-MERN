@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-import FileBase from 'react-file-base64';
+import FileBase from "react-file-base64";
 import { css } from "styled-components/macro"; //eslint-disable-line
 import {
   SectionHeading,
@@ -52,7 +52,7 @@ export default class FoundSomething extends Component {
       docDescription: "",
       docImage: "",
       isLoading: false,
-      isError: null
+      isError: null,
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -72,7 +72,7 @@ export default class FoundSomething extends Component {
 
     try {
       this.setState({ ...this.state, isLoading: true });
-      const res = await fetch('http://localhost:5555/api/docs', {
+      const res = await fetch("http://localhost:5555/api/docs", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -82,12 +82,12 @@ export default class FoundSomething extends Component {
           serial: this.state.docSerial,
           description: this.state.docDescription,
           image: this.state.docImage,
-          isLost: false
+          isLost: false,
         }),
       });
-      
+
       const responseData = await res.json();
-      
+
       if (!res.ok) {
         throw new Error(responseData.message);
       }
@@ -95,28 +95,25 @@ export default class FoundSomething extends Component {
         docName: "",
         docSerial: "",
         docDescription: "",
-        docImage: "",  
-      })
+        docImage: "",
+      });
       console.log(responseData);
-    }
-     catch (err) {
+    } catch (err) {
       console.log(err);
       this.setState({
-        ...this.state, 
+        ...this.state,
         isError: err.message || "Something Went Wrong, Please Try Again Later",
       });
     }
     this.setState({ ...this.state, isLoading: false });
   };
 
-
   fileHandler(file) {
     this.setState({
       ...this.state,
-      docImage: file.base64
-    })
+      docImage: file.base64,
+    });
   }
-
 
   render(
     subheading = "Found Some Docs",
@@ -169,8 +166,12 @@ export default class FoundSomething extends Component {
                     onChange={this.onChangeHandler}
                   />
                   <br />
-                  <FileBase onDone={(file) => this.fileHandler(file)}/>
-                   <SubmitButton type="submit">{!this.state.isLoading ? submitButtonText : "Uploading data..."}</SubmitButton>
+                  <FileBase onDone={(file) => this.fileHandler(file)} />
+                  <SubmitButton type="submit">
+                    {!this.state.isLoading
+                      ? submitButtonText
+                      : "Uploading data..."}
+                  </SubmitButton>
                 </Form>
               </TextContent>
             </TextColumn>

@@ -6,8 +6,10 @@ const docRoutes = require("./routes/doc-routes");
 const usersRoutes = require("./routes/users-routes");
 const HttpError = require("./models/http-error");
 
-const app = express();
+// const newDocRoute = require("./routes/docRoute");
 
+const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
@@ -22,6 +24,7 @@ app.use((req, res, next) => {
 
 app.use("/api/docs", docRoutes);
 app.use("/api/users", usersRoutes);
+// app.use("/api/docs", newDocRoute);
 
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);

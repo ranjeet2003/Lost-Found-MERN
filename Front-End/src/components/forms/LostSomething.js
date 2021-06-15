@@ -80,8 +80,10 @@ export default class LostSomething extends Component {
       this.setState({ ...this.state, isLoading: true });
       const res = await fetch("http://localhost:5555/api/docs", {
         method: "POST",
+        mode: "no-cors",
         headers: {
           "Content-type": "application/json",
+          "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
           name: this.state.docName,
