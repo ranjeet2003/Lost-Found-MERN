@@ -7,7 +7,7 @@ const documentSchema = new Schema({
   description: { type: String, required: true },
   image: { type: String, required: true },
   serial: { type: String },
-  isLost: { type: Boolean, required: true },
+  // isLost: { type: Boolean, required: true },
   // img: {
   //   data: Buffer,
   //   contentType: String,

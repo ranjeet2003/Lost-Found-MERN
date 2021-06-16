@@ -40,6 +40,8 @@ const signup = async (req, res, next) => {
   }
   const { name, email, mobile, password } = req.body;
 
+  // const userName = req.body.name;
+
   let existingUser;
   try {
     existingUser = await User.findOne({ email: email });
@@ -60,6 +62,7 @@ const signup = async (req, res, next) => {
   }
 
   const createdUser = new User({
+    // name: userName,
     name,
     email,
     image: "https://live.staticflickr.com/7631/26849088292_36fc52ee90_b.jpg",

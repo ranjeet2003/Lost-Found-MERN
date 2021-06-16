@@ -73,7 +73,7 @@ export default ({
   collapseBreakpointClass = "lg",
   name,
 }) => {
-  console.log(name);
+  // console.log(name);
   const loginSignuoLinks = (
     <>
       {" "}

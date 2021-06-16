@@ -12,8 +12,6 @@ import logo from "images/logo-new.jpg";
 import googleIconImageSrc from "images/google-icon.png";
 import twitterIconImageSrc from "images/twitter-icon.png";
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
-import SweetAlert from "react-bootstrap-sweetalert";
-import Alert from "../helpers/Alert";
 
 // import Header from "../components/headers/light";
 

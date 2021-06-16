@@ -62,7 +62,7 @@ const foundInfo = async (req, res, next) => {
   try {
     // console.log(createdDoc);
     await createdDoc.save();
-    // console.log("Document saved to db");
+    console.log("Document saved to db" + createdDoc);
   } catch (err) {
     const error = new HttpError("Doc Upload Failed, please try again.", 500);
     return next(error);

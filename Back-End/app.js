@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const docRoutes = require("./routes/doc-routes");
 const usersRoutes = require("./routes/users-routes");
@@ -9,6 +10,16 @@ const HttpError = require("./models/http-error");
 // const newDocRoute = require("./routes/docRoute");
 
 const app = express();
+app.use(cors());
+// app.use(express.bodyParser({ limit: "50mb" }));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    extended: true,
+    parameterLimit: 50000,
+  })
+);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 

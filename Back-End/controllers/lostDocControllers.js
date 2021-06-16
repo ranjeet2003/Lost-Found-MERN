@@ -38,7 +38,7 @@ const lostInfo = async (req, res, next) => {
     name: req.body.name,
     description: req.body.description,
     serial: req.body.serial,
-    img: {
+    image: {
       data: fs.readFileSync(
         path.join("public/LostUpload/" + req.file.filename)
       ),
@@ -52,22 +52,18 @@ const lostInfo = async (req, res, next) => {
     name: obj.name,
     description: obj.description,
     serial: obj.serial,
-    // image: obj.img.filename,
-    // img: obj.file,
-    // image: "abc.jpg",
     image: req.file.filename,
-    isLost: true,
   });
 
   try {
-    // console.log(createdDoc);
+    console.log(createdDoc);
     await createdDoc.save();
     // console.log("Document saved to db");
   } catch (err) {
     const error = new HttpError("Doc Upload Failed, please try again.", 500);
     return next(error);
   }
-
+  // docs: createdDoc.toObject({ getters: true })
   res.status(201).json({ docs: createdDoc.toObject({ getters: true }) });
 };
 
