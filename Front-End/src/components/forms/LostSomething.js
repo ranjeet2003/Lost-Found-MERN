@@ -85,43 +85,6 @@ export default class LostSomething extends Component {
     event.preventDefault();
     this.setState({ isLoading: true });
 
-    /*
-    try {
-      this.setState({ isLoading: true });
-      const data = new FormData();
-      data.append("name", this.state.docName);
-      data.append("serial", this.state.docSerial);
-      data.append("description", this.state.docDescription);
-      data.append("img", this.state.docImage);
-      console.log(data);
-      console.log(this.state.docImage);
-      const response = await fetch("http://localhost:5555/api/docs/lostDocs", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded",
-        },
-        body: data,
-      });
-      // console.log(data.name);
-      const responseData = await response.json();
-      if (!response.ok) {
-        console.log("response is not ok");
-        // throw new Error(responseData.message);
-      }
-      console.log(responseData);
-
-      // this.setState({ username: responseData.name });
-      // console.log(this.state.username);
-    } catch (err) {
-      console.log("There is some error" + err);
-      this.setState({
-        isError: err.message || "Something Went Wrong, Please Try Again Later",
-      });
-    }
-    this.setState({ isLoading: false });
-    */
-
-    // /*
     var formdata = new FormData();
     formdata.append("name", this.state.docName);
     formdata.append("description", this.state.docDescription);
@@ -141,17 +104,16 @@ export default class LostSomething extends Component {
     fetch("http://localhost:5555/api/docs/lostDocs", requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
+      .catch((error) => {
+        console.log("error", error);
+        this.setState({
+          isError:
+            error.message || "Something Went Wrong, Please Try Again Later",
+        });
+      });
     this.setState({ isLoading: false });
     // */
   };
-
-  // fileHandler(file) {
-  //   this.setState({
-  //     ...this.state,
-  //     docImage: file.base64,
-  //   });
-  // }
 
   render(
     subheading = "Lost Some Docs",

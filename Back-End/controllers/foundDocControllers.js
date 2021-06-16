@@ -56,13 +56,13 @@ const foundInfo = async (req, res, next) => {
     // img: obj.file,
     // image: "abc.jpg",
     image: req.file.filename,
-    isFound: true,
+    // isFound: true,
   });
 
   try {
-    // console.log(createdDoc);
+    console.log(createdDoc);
     await createdDoc.save();
-    console.log("Document saved to db" + createdDoc);
+    // console.log("Document saved to db" + createdDoc);
   } catch (err) {
     const error = new HttpError("Doc Upload Failed, please try again.", 500);
     return next(error);

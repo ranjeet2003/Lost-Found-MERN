@@ -56,6 +56,7 @@ export default class FoundSomething extends Component {
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
+    this.onChangeHandlerFile = this.onChangeHandlerFile.bind(this);
   }
 
   onChangeHandler(event) {
@@ -66,10 +67,23 @@ export default class FoundSomething extends Component {
       [name]: value,
     });
   }
+
+  onChangeHandlerFile(event) {
+    this.setState({
+      docImage: event.target.files[0],
+    });
+  }
+
+  errorHandler = () => {
+    this.setState({ isError: null });
+  };
+
   onSubmitHandler = async (event) => {
     // window.alert("The form data is " + JSON.stringify(this.state));
     event.preventDefault();
+    this.setState({ isLoading: true });
 
+    /*
     try {
       this.setState({ ...this.state, isLoading: true });
       const res = await fetch("http://localhost:5555/api/docs", {
@@ -105,7 +119,35 @@ export default class FoundSomething extends Component {
         isError: err.message || "Something Went Wrong, Please Try Again Later",
       });
     }
-    this.setState({ ...this.state, isLoading: false });
+    */
+    var formdata = new FormData();
+    formdata.append("name", this.state.docName);
+    formdata.append("description", this.state.docDescription);
+    formdata.append("serial", this.state.docSerial);
+    formdata.append(
+      "img",
+      // fileInput.files[0],
+      this.state.docImage
+    );
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:5555/api/docs/foundDocs", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => {
+        console.log("error", error);
+        this.setState({
+          isError:
+            error.message || "Something Went Wrong, Please Try Again Later",
+        });
+      });
+
+    this.setState({ isLoading: false });
   };
 
   fileHandler(file) {
@@ -143,7 +185,10 @@ export default class FoundSomething extends Component {
                 {subheading && <Subheading>{subheading}</Subheading>}
                 <Heading>{heading}</Heading>
                 {description && <Description>{description}</Description>}
-                <Form onSubmit={this.onSubmitHandler}>
+                <Form
+                  onSubmit={this.onSubmitHandler}
+                  encType="multipart/form-data"
+                >
                   <Input
                     type="text"
                     name="docName"
@@ -166,7 +211,15 @@ export default class FoundSomething extends Component {
                     onChange={this.onChangeHandler}
                   />
                   <br />
-                  <FileBase onDone={(file) => this.fileHandler(file)} />
+                  {/* <FileBase onDone={(file) => this.fileHandler(file)} /> */}
+                  <Input
+                    type="file"
+                    id="fileItem"
+                    name="file"
+                    placeholder="Upload file here."
+                    // value={this.state.docDescription}
+                    onChange={this.onChangeHandlerFile}
+                  />
                   <SubmitButton type="submit">
                     {!this.state.isLoading
                       ? submitButtonText
