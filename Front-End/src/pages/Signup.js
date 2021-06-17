@@ -120,6 +120,7 @@ export default class Signup extends Component {
       });
     }
     this.setState({ isLoading: false });
+    // const mob = responseData.mobile;
   };
 
   render(
@@ -149,6 +150,7 @@ export default class Signup extends Component {
         <AnimationRevealPage>
           {/* <Navbar roundedHeaderButton={true} /> */}
           <Header roundedHeaderButton={true} />
+          {/* <DummyImag   /> */}
 
           <Container>
             {this.state.isLoading && <Spinner asOverlay />}
