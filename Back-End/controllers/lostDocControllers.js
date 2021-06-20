@@ -6,9 +6,7 @@ const Document = require("../models/lostDocument");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-// const tesseract = require("node-tesseract-ocr");
-// var tesseract1 = require("node-tesseract");
-// import Tesseract from "tesseract.js";
+
 const Tesseract = require("tesseract.js");
 
 const multerStorage = multer.diskStorage({
@@ -89,12 +87,6 @@ const lostInfo = async (req, res, next) => {
       const error = new HttpError("Doc Upload Failed, please try again.", 500);
       return next(error);
     });
-
-  // docs: createdDoc.toObject({ getters: true })
-  // res.status(201).json({ docs: createdDoc.toObject({ getters: true }) });
-  // Code for OCR
-
-  // console.log(imageName);
 };
 
 exports.lostInfo = lostInfo;

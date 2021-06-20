@@ -7,6 +7,8 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 
+const Tesseract = require("tesseract.js");
+
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/FoundUpload");
@@ -38,7 +40,7 @@ const foundInfo = async (req, res, next) => {
     name: req.body.name,
     description: req.body.description,
     serial: req.body.serial,
-    img: {
+    image: {
       data: fs.readFileSync(
         path.join("public/FoundUpload/" + req.file.filename)
       ),
@@ -48,27 +50,43 @@ const foundInfo = async (req, res, next) => {
   //   console.log(req.file);
   //   console.log(obj);
 
-  const createdDoc = new Document({
-    name: obj.name,
-    description: obj.description,
-    serial: obj.serial,
-    // image: obj.img.filename,
-    // img: obj.file,
-    // image: "abc.jpg",
-    image: req.file.filename,
-    // isFound: true,
-  });
+  let ocrData = "";
 
-  try {
-    console.log(createdDoc);
-    await createdDoc.save();
-    // console.log("Document saved to db" + createdDoc);
-  } catch (err) {
-    const error = new HttpError("Doc Upload Failed, please try again.", 500);
-    return next(error);
-  }
+  let reqPath = path.join(__dirname, "../");
+  let temp = path.join(reqPath, "public");
+  let temp1 = path.join(temp, "FoundUpload");
+  temp1 = temp1 + "\\";
 
-  res.status(201).json({ docs: createdDoc.toObject({ getters: true }) });
+  // const imageName = temp1 + createdDoc.image;
+  const imageName = temp1 + req.file.filename;
+
+  Tesseract.recognize(imageName, "eng", {
+    logger: (m) => console.log(m),
+  })
+    .then(({ data: { text } }) => {
+      // console.log(text);
+      // docs: createdDoc.toObject({ getters: true });
+
+      ocrData = text;
+
+      // { docs: createdDoc.toObject({ getters: true }) }
+    })
+    .then(() => {
+      // console.log(ocrData);
+      const createdDoc = new Document({
+        name: obj.name,
+        description: obj.description,
+        serial: obj.serial,
+        image: req.file.filename,
+        text: ocrData,
+      });
+      createdDoc.save();
+      res.status(201).json({ docs: createdDoc.toObject({ getters: true }) });
+    })
+    .catch((err) => {
+      const error = new HttpError("Doc Upload Failed, please try again.", 500);
+      return next(error);
+    });
 };
 
 exports.foundInfo = foundInfo;
