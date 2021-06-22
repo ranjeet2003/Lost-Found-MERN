@@ -12,7 +12,7 @@ const documentSchema = new Schema({
   //   data: Buffer,
   //   contentType: String,
   // },
-  text: { type: String },
+  encText: { type: String },
 });
 
 module.exports = mongoose.model("lostDocument", documentSchema);

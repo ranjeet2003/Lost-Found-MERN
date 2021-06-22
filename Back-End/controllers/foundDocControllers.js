@@ -81,7 +81,7 @@ const foundInfo = async (req, res, next) => {
         description: obj.description,
         serial: obj.serial,
         image: req.file.filename,
-        text: ocrData,
+        encText: ocrData,
       });
       createdDoc.save();
       res.status(201).json({ docs: createdDoc.toObject({ getters: true }) });
