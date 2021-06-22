@@ -1,4 +1,5 @@
 const { validationResult } = require("express-validator");
+var crypto = require("crypto");
 
 const HttpError = require("../models/http-error");
 const Document = require("../models/lostDocument");
@@ -67,9 +68,11 @@ const lostInfo = async (req, res, next) => {
       // console.log(text);
       // docs: createdDoc.toObject({ getters: true });
 
-      ocrData = text;
-
+      // ocrData = text;
+      const hash = crypto.createHash("sha256").update(text).digest("base64");
       // { docs: createdDoc.toObject({ getters: true }) }
+      // console.log(hash);
+      ocrData = hash;
     })
     .then(() => {
       // console.log(ocrData);
