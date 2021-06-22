@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
-var crypto = require("crypto");
+const crypto = require("crypto");
+const FoundDocument = require("../models/foundDocument");
 
 const HttpError = require("../models/http-error");
 const Document = require("../models/lostDocument");
@@ -76,12 +77,21 @@ const lostInfo = async (req, res, next) => {
     })
     .then(() => {
       // console.log(ocrData);
+
+      let isDocMatched = FoundDocument.find({ encText: ocrData });
+      if (isDocMatched) {
+        isDocMatched = true;
+      } else {
+        isDocMatched = false;
+      }
+
       const createdDoc = new Document({
         name: obj.name,
         description: obj.description,
         serial: obj.serial,
         image: req.file.filename,
         encText: ocrData,
+        isMatched: isDocMatched,
       });
       createdDoc.save();
       res.status(201).json({ docs: createdDoc.toObject({ getters: true }) });

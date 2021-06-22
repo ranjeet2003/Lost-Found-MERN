@@ -13,6 +13,7 @@ const documentSchema = new Schema({
   //   contentType: String,
   // },
   encText: { type: String },
+  isMatched: { type: Boolean },
 });
 
 module.exports = mongoose.model("lostDocument", documentSchema);
