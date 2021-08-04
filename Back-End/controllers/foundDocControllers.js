@@ -3,6 +3,7 @@ var crypto = require("crypto");
 
 const HttpError = require("../models/http-error");
 const Document = require("../models/foundDocument");
+const LostDocument = require("../models/lostDocument");
 
 const multer = require("multer");
 const fs = require("fs");
@@ -35,8 +36,6 @@ const upload = multer({
 exports.uploadDocs = upload.single("img");
 
 const foundInfo = async (req, res, next) => {
-  //   console.log(typeof req.file.filename);
-
   var obj = {
     name: req.body.name,
     description: req.body.description,
@@ -48,43 +47,56 @@ const foundInfo = async (req, res, next) => {
       contentType: "image/png",
     },
   };
-  //   console.log(req.file);
-  //   console.log(obj);
-
   let ocrData = "";
-
   let reqPath = path.join(__dirname, "../");
   let temp = path.join(reqPath, "public");
   let temp1 = path.join(temp, "FoundUpload");
   temp1 = temp1 + "\\";
-
-  // const imageName = temp1 + createdDoc.image;
   const imageName = temp1 + req.file.filename;
 
   Tesseract.recognize(imageName, "eng", {
     logger: (m) => console.log(m),
   })
     .then(({ data: { text } }) => {
-      // console.log(text);
-      // docs: createdDoc.toObject({ getters: true });
-
       const hash = crypto.createHash("sha256").update(text).digest("base64");
-
       ocrData = hash;
-
-      // { docs: createdDoc.toObject({ getters: true }) }
     })
     .then(() => {
-      // console.log(ocrData);
-      const createdDoc = new Document({
-        name: obj.name,
-        description: obj.description,
-        serial: obj.serial,
-        image: req.file.filename,
-        encText: ocrData,
-      });
-      createdDoc.save();
-      res.status(201).json({ docs: createdDoc.toObject({ getters: true }) });
+      let isDocMatched = false;
+
+      let MatchedCurser = LostDocument.findOne({ encText: ocrData }).exec(
+        (err, data) => {
+          if (err) console.log(err);
+          else {
+            // console.log(data);
+            // if (data.encText === ocrData) {
+            //   isDocMatched = true;
+            // }
+            if (!data) {
+              const error = new HttpError(
+                "Your document did not found on database, Please try after some time.",
+                401
+              );
+              return next(error);
+            } else if (data.encText === ocrData) {
+              isDocMatched = true;
+            }
+            const createdDoc = new Document({
+              name: obj.name,
+              description: obj.description,
+              serial: obj.serial,
+              image: req.file.filename,
+              encText: ocrData,
+              isMatched: isDocMatched,
+            });
+            createdDoc.save();
+            res
+              .status(201)
+              .json({ docs: createdDoc.toObject({ getters: true }) });
+            console.log("Document mached: " + isDocMatched);
+          }
+        }
+      );
     })
     .catch((err) => {
       const error = new HttpError("Doc Upload Failed, please try again.", 500);
