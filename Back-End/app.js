@@ -5,7 +5,7 @@ const cors = require("cors");
 
 const docRoutes = require("./routes/doc-routes");
 const usersRoutes = require("./routes/users-routes");
-const HttpError = require("./models/http-error");
+const HttpError = require("./util/http-error");
 
 // const newDocRoute = require("./routes/docRoute");
 

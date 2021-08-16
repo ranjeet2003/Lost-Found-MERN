@@ -1,7 +1,8 @@
 const { validationResult } = require("express-validator");
 var crypto = require("crypto");
 
-const HttpError = require("../models/http-error");
+const HttpError = require("../util/http-error");
+
 const Document = require("../models/foundDocument");
 const LostDocument = require("../models/lostDocument");
 
