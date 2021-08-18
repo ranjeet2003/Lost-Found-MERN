@@ -5,7 +5,7 @@ const usersController = require("../controllers/users-controllers");
 
 const router = express.Router();
 
-router.get("/", usersController.getUsers);
+// router.get("/", usersController.getUsers);
 
 router.post(
   "/signup",
@@ -20,6 +20,7 @@ router.post(
 );
 
 router.post("/login", usersController.login);
+router.get("/logout", usersController.logout);
 // router.get("/numUser", usersController.getUsersNum);
 
 module.exports = router;
