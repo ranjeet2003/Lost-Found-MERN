@@ -8,9 +8,15 @@ const router = express.Router();
 // router.get("/", usersController.getUsers);
 
 router.post("/signup", usersController.signup);
-
 router.post("/login", usersController.login);
 router.get("/logout", usersController.logout);
+
+// Protect all routes after this middleware
+// All routes are protected after this middleware.
+// User need to be logged in before accessing this route
+router.use(usersController.protect);
+
+router.patch("/updateMyPassword", usersController.updatePassword);
 // router.get("/numUser", usersController.getUsersNum);
 
 module.exports = router;
