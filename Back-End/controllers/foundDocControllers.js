@@ -69,10 +69,6 @@ const foundInfo = async (req, res, next) => {
         (err, data) => {
           if (err) console.log(err);
           else {
-            // console.log(data);
-            // if (data.encText === ocrData) {
-            //   isDocMatched = true;
-            // }
             if (!data) {
               const error = new HttpError(
                 "Your document did not found on database, Please try after some time.",
