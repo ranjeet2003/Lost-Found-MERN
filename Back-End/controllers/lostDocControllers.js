@@ -62,7 +62,7 @@ const lostInfo = async (req, res, next) => {
   const imageName = temp1 + req.file.filename;
 
   Tesseract.recognize(imageName, "eng", {
-    // logger: (m) => console.log(m),
+    logger: (m) => console.log(m),
   })
     .then(({ data: { text } }) => {
       // console.log(text);

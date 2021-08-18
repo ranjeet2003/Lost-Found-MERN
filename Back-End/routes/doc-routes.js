@@ -4,15 +4,16 @@ const { check } = require("express-validator");
 const documentControllers = require("../controllers/document-controllers");
 const lostDocControllers = require("../controllers/lostDocControllers");
 const foundDocController = require("../controllers/foundDocControllers");
+const usersController = require("../controllers/users-controllers");
 
 const router = express.Router();
 
-router.get("/", documentControllers.getDocuments);
-router.get("/:did", documentControllers.getDocumentById);
+// router.get("/", documentControllers.getDocuments);
+// router.get("/:did", documentControllers.getDocumentById);
 
 // router.get('/user/:uid', placesControllers.getPlacesByUserId);
 
-router.post("/", documentControllers.createDocument);
+// router.post("/", documentControllers.createDocument);
 
 // router.patch(
 //   '/:pid',
@@ -26,6 +27,7 @@ router.post("/", documentControllers.createDocument);
 // );
 
 // router.delete('/:pid', placesControllers.deletePlace);
+router.use(usersController.protect);
 
 router.post(
   "/lostDocs",
