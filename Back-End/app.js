@@ -7,6 +7,8 @@ const docRoutes = require("./routes/doc-routes");
 const usersRoutes = require("./routes/users-routes");
 const HttpError = require("./util/http-error");
 
+require("dotenv").config({ path: "./config.env" });
+
 // const newDocRoute = require("./routes/docRoute");
 
 const app = express();

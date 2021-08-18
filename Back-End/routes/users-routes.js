@@ -20,6 +20,6 @@ router.post(
 );
 
 router.post("/login", usersController.login);
-router.get("/numUser", usersController.getUsersNum);
+// router.get("/numUser", usersController.getUsersNum);
 
 module.exports = router;

@@ -1,6 +1,40 @@
+const crypto = require("crypto");
+const { promisify } = require("util");
+const jwt = require("jsonwebtoken");
+const catchAsync = require("./../util/catchAsync");
 const { validationResult } = require("express-validator");
 const HttpError = require("../util/http-error");
 const User = require("../models/user");
+
+const signToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+};
+
+const createSendToken = (user, statusCode, res) => {
+  const token = signToken(user._id);
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+
+  res.cookie("jwt", token, cookieOptions);
+
+  // Remove password from output
+  user.password = undefined;
+
+  res.status(statusCode).json({
+    status: "success",
+    token,
+    data: {
+      user,
+    },
+  });
+};
 
 const getUsers = async (req, res, next) => {
   let users;
@@ -16,70 +50,15 @@ const getUsers = async (req, res, next) => {
   res.json({ users: users.map((user) => user.toObject({ getters: true })) });
 };
 
-const getUsersNum = async (req, res, next) => {
-  let users;
-  try {
-    users = await User.find({}, "-password").countDocuments();
-  } catch (err) {
-    const error = new HttpError(
-      "Fetching users failed, please try again later.",
-      500
-    );
-    return next(error);
-  }
-  res.json({ users: users });
-};
-
-const signup = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please check your data.", 422)
-    );
-  }
-  const { name, email, mobile, password } = req.body;
-
-  // const userName = req.body.name;
-
-  let existingUser;
-  try {
-    existingUser = await User.findOne({ email: email });
-  } catch (err) {
-    const error = new HttpError(
-      "Signing up failed, please try again later db error.",
-      500
-    );
-    return next(error);
-  }
-
-  if (existingUser) {
-    const error = new HttpError(
-      "User exists already, please login instead.",
-      422
-    );
-    return next(error);
-  }
-
-  const createdUser = new User({
-    // name: userName,
-    name,
-    email,
-    image: "https://live.staticflickr.com/7631/26849088292_36fc52ee90_b.jpg",
-    password,
-    mobile,
-    docs: [],
-    signed: true,
+const signup = catchAsync(async (req, res, next) => {
+  const newUser = await User.create({
+    name: req.body.name,
+    email: req.body.email,
+    mobile: req.body.mobile,
+    password: req.body.password,
   });
-
-  try {
-    await createdUser.save();
-  } catch (err) {
-    const error = new HttpError("Signing up failed, please try again.", 500);
-    return next(error);
-  }
-
-  res.status(201).json({ user: createdUser.toObject({ getters: true }) });
-};
+  createSendToken(newUser, 201, res);
+});
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -110,4 +89,4 @@ const login = async (req, res, next) => {
 exports.getUsers = getUsers;
 exports.signup = signup;
 exports.login = login;
-exports.getUsersNum = getUsersNum;
+// exports.getUsersNum = getUsersNum;
