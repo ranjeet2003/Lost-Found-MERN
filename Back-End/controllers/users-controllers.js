@@ -5,6 +5,7 @@ const catchAsync = require("./../util/catchAsync");
 const { validationResult } = require("express-validator");
 const HttpError = require("../util/http-error");
 const User = require("../models/user");
+const AppError = require("./../util/appError");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -60,33 +61,51 @@ const signup = catchAsync(async (req, res, next) => {
   createSendToken(newUser, 201, res);
 });
 
-const login = async (req, res, next) => {
+// const login = async (req, res, next) => {
+//   const { email, password } = req.body;
+
+//   let existingUser;
+
+//   try {
+//     existingUser = await User.findOne({ email: email });
+//   } catch (err) {
+//     const error = new HttpError(
+//       "Logging in failed, please try again later.",
+//       500
+//     );
+//     return next(error);
+//   }
+
+//   if (!existingUser || existingUser.password !== password) {
+//     const error = new HttpError(
+//       "Invalid credentials, could not log you in.",
+//       401
+//     );
+//     return next(error);
+//   }
+
+//   res.json({ message: "Logged in!", signed: true, name: existingUser.name });
+// };
+
+exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
-  let existingUser;
+  // 1) Check if email and password exist
+  if (!email || !password) {
+    return next(new AppError("Please provide email and password!", 400));
+  }
+  // 2) Check if user exists && password is correct
+  const user = await User.findOne({ email }).select("+password");
 
-  try {
-    existingUser = await User.findOne({ email: email });
-  } catch (err) {
-    const error = new HttpError(
-      "Logging in failed, please try again later.",
-      500
-    );
-    return next(error);
+  if (!user || !(await user.correctPassword(password, user.password))) {
+    return next(new AppError("Incorrect email or password", 401));
   }
 
-  if (!existingUser || existingUser.password !== password) {
-    const error = new HttpError(
-      "Invalid credentials, could not log you in.",
-      401
-    );
-    return next(error);
-  }
-
-  res.json({ message: "Logged in!", signed: true, name: existingUser.name });
-};
+  // 3) If everything ok, send token to client
+  createSendToken(user, 200, res);
+});
 
 exports.getUsers = getUsers;
 exports.signup = signup;
-exports.login = login;
+// exports.login = login;
 // exports.getUsersNum = getUsersNum;
