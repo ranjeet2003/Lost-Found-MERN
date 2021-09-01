@@ -35,6 +35,8 @@ const createSendToken = (user, statusCode, res) => {
       user,
     },
   });
+  // res.redirect("/");
+  // .redirect("/");
 };
 
 const getUsers = async (req, res, next) => {
@@ -61,32 +63,6 @@ exports.signup = catchAsync(async (req, res, next) => {
   createSendToken(newUser, 201, res);
 });
 
-// const login = async (req, res, next) => {
-//   const { email, password } = req.body;
-
-//   let existingUser;
-
-//   try {
-//     existingUser = await User.findOne({ email: email });
-//   } catch (err) {
-//     const error = new HttpError(
-//       "Logging in failed, please try again later.",
-//       500
-//     );
-//     return next(error);
-//   }
-
-//   if (!existingUser || existingUser.password !== password) {
-//     const error = new HttpError(
-//       "Invalid credentials, could not log you in.",
-//       401
-//     );
-//     return next(error);
-//   }
-
-//   res.json({ message: "Logged in!", signed: true, name: existingUser.name });
-// };
-
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -110,7 +86,10 @@ exports.logout = (req, res) => {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
   });
-  res.status(200).json({ status: "success" });
+  res.status(200).json({
+    status: "success",
+    message: "You have been successfully logged out !",
+  });
 };
 
 exports.protect = catchAsync(async (req, res, next) => {

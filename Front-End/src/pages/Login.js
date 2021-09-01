@@ -12,6 +12,7 @@ import logo from "images/logo-new.jpg";
 import googleIconImageSrc from "images/google-icon.png";
 import twitterIconImageSrc from "images/twitter-icon.png";
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
+import { useHistory } from "react-router-dom";
 
 // import Header from "../components/headers/light";
 
@@ -123,6 +124,7 @@ class Login extends Component {
         throw new Error(responseData.message);
       }
       console.log(responseData);
+      console.log(responseData.data.user.name);
 
       this.setState({ username: responseData.name });
       // console.log(this.state.username);

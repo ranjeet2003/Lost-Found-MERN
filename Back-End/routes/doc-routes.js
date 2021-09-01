@@ -27,16 +27,18 @@ const router = express.Router();
 // );
 
 // router.delete('/:pid', placesControllers.deletePlace);
-router.use(usersController.protect);
+// router.use(usersController.protect);
 
 router.post(
   "/lostDocs",
+  usersController.protect,
   lostDocControllers.uploadDocs,
   lostDocControllers.lostInfo
 );
 
 router.post(
   "/foundDocs",
+  usersController.protect,
   foundDocController.uploadDocs,
   foundDocController.foundInfo
 );
