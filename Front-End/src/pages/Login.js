@@ -13,7 +13,8 @@ import logo from "images/logo-new.jpg";
 import googleIconImageSrc from "images/google-icon.png";
 import twitterIconImageSrc from "images/twitter-icon.png";
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // import Header from "../components/headers/light";
 
@@ -177,7 +178,11 @@ class Login extends Component {
       <>
         <ErrorModel error={this.state.isError} onClear={this.errorHandler} />
         {this.state.isLoggedIn ? (
-          <SaaSProductLandingPage />
+          <Router>
+            <Route>
+              <SaaSProductLandingPage />
+            </Route>
+          </Router>
         ) : (
           <AnimationRevealPage>
             <Header roundedHeaderButton={true} name={this.state.username} />
