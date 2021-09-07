@@ -53,6 +53,21 @@ const getUsers = async (req, res, next) => {
   res.json({ users: users.map((user) => user.toObject({ getters: true })) });
 };
 
+exports.totalUser = async (req, res, next) => {
+  let num;
+  try {
+    num = await User.countDocuments();
+    // console.log(num);
+  } catch (err) {
+    const error = new HttpError(
+      "Counting users failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  res.status(200).json({ status: true, totalUser: num });
+};
+
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     name: req.body.name,

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
-import FileBase from "react-file-base64";
+// import FileBase from "react-file-base64";
 import {
   SectionHeading,
   Subheading as SubheadingBase,

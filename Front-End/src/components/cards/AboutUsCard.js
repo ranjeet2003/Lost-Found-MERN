@@ -68,23 +68,23 @@ export default ({
   let totalLostDocs = 0;
   let totalFoundDocs = 0;
   let totalMatchedAndReturnedDocs = 0;
-  let responseData;
-  let num;
+  let numUser;
 
-  const totalUsers = () => {
-    fetch("http://localhost:5555/api/users/numUser")
-      .then((response) => response.json())
-      .then((response) => {
-        num = response.users;
-        console.log(num);
-      });
+  const totalUsers = async () => {
+    const response = await fetch("http://localhost:5555/api/users/numUser");
+    const responseData = await response.json();
+    console.log(responseData);
+    numUser = responseData.totalUser;
+    console.log(numUser);
   };
   totalUsers();
   //   console.log(totalUser);
+  console.log(numUser);
+
   const defaultCards = [
     {
       title: "Total Users",
-      description: totalUser,
+      description: `${numUser} are enjoying project.`,
     },
     {
       title: "Total Lost Document Uploads",

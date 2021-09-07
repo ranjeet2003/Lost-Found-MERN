@@ -1,7 +1,7 @@
 const express = require("express");
 const { check } = require("express-validator");
 
-const documentControllers = require("../controllers/document-controllers");
+// const documentControllers = require("../controllers/document-controllers");
 const lostDocControllers = require("../controllers/lostDocControllers");
 const foundDocController = require("../controllers/foundDocControllers");
 const usersController = require("../controllers/users-controllers");

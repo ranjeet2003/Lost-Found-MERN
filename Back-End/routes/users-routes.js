@@ -10,6 +10,7 @@ const router = express.Router();
 router.post("/signup", usersController.signup);
 router.post("/login", usersController.login);
 router.get("/logout", usersController.logout);
+router.get("/numUser", usersController.totalUser);
 
 // Protect all routes after this middleware
 // All routes are protected after this middleware.

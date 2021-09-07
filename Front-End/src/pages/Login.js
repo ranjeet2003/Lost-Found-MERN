@@ -14,7 +14,7 @@ import googleIconImageSrc from "images/google-icon.png";
 import twitterIconImageSrc from "images/twitter-icon.png";
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
 // import { useHistory } from "react-router-dom";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 // import Header from "../components/headers/light";
 
@@ -134,8 +134,6 @@ class Login extends Component {
       // console.log(responseData.status);
 
       if (response && responseData.status === "success") {
-        // console.log("Logged in");
-        // <SaaSProductLandingPage />;
         this.setState({
           isLoggedIn: true,
         });
