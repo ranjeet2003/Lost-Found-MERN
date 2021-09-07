@@ -109,6 +109,7 @@ import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Signup";
 import LostSomething from "./components/forms/LostSomething";
 import FoundSomething from "./components/forms/FoundSomething";
+import Payment from "./pages/Payment.js";
 // import About from "./pages/AboutUs";
 import About1 from "./components/cards/AboutUsCard";
 
@@ -147,6 +148,9 @@ export default function App() {
         </Route>
         <Route path="/found-something" exact>
           <FoundSomething />
+        </Route>
+        <Route path="/payment" exact>
+          <Payment />
         </Route>
       </Switch>
     </Router>

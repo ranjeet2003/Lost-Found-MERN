@@ -35,7 +35,7 @@ const createSendToken = (user, statusCode, res) => {
       user,
     },
   });
-  // res.redirect("/");
+  // res.redirect("http://localhost:3000");
   // .redirect("/");
 };
 

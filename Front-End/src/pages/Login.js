@@ -2,6 +2,7 @@ import { React, Component } from "react";
 import { Link } from "react-router-dom";
 // import { hashHistory } from "react-router";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
+import SaaSProductLandingPage from "../demos/SaaSProductLandingPage";
 import { Container as ContainerBase } from "components/misc/Layouts";
 import Header from "components/hero/CustomHeader.js";
 import tw from "twin.macro";
@@ -86,6 +87,7 @@ class Login extends Component {
       isError: null,
       username: "",
       alert: null,
+      isLoggedIn: false,
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -124,7 +126,20 @@ class Login extends Component {
         throw new Error(responseData.message);
       }
       console.log(responseData);
+      this.setState({
+        username: responseData.data.user.name,
+      });
       console.log(responseData.data.user.name);
+      // console.log(responseData.status);
+
+      if (response && responseData.status === "success") {
+        // console.log("Logged in");
+        // <SaaSProductLandingPage />;
+        this.setState({
+          isLoggedIn: true,
+        });
+        console.log("Logged In" + this.state.isLoggedIn);
+      }
 
       this.setState({ username: responseData.name });
       // console.log(this.state.username);
@@ -135,6 +150,7 @@ class Login extends Component {
       });
     }
     this.setState({ isLoading: false });
+    console.log(window.location.pathname);
   };
 
   render(
@@ -160,82 +176,87 @@ class Login extends Component {
     return (
       <>
         <ErrorModel error={this.state.isError} onClear={this.errorHandler} />
-        <AnimationRevealPage>
-          <Header roundedHeaderButton={true} name={this.state.username} />
-          <Container>
-            {this.state.isLoading && <Spinner asOverlay />}
+        {this.state.isLoggedIn ? (
+          <SaaSProductLandingPage />
+        ) : (
+          <AnimationRevealPage>
+            <Header roundedHeaderButton={true} name={this.state.username} />
 
-            <Content>
-              <MainContainer>
-                <LogoLink href={logoLinkUrl}>
-                  <LogoImage src={logo} />
-                </LogoLink>
-                <MainContent>
-                  <Heading>{headingText}</Heading>
-                  <FormContainer>
-                    <SocialButtonsContainer>
-                      {socialButtons.map((socialButton, index) => (
-                        <SocialButton key={index} href={socialButton.url}>
-                          <span className="iconContainer">
-                            <img
-                              src={socialButton.iconImageSrc}
-                              className="icon"
-                              alt=""
-                            />
-                          </span>
-                          <span className="text">{socialButton.text}</span>
-                        </SocialButton>
-                      ))}
-                    </SocialButtonsContainer>
-                    <DividerTextContainer>
-                      <DividerText>Or Sign in with your e-mail</DividerText>
-                    </DividerTextContainer>
-                    <Form onSubmit={this.onSubmitHandler}>
-                      <Input
-                        type="email"
-                        placeholder="Email"
-                        name="email"
-                        value={this.state.email}
-                        onChange={this.onChangeHandler}
-                      />
-                      <Input
-                        type="password"
-                        placeholder="Password"
-                        name="password"
-                        value={this.state.passoword}
-                        onChange={this.onChangeHandler}
-                      />
-                      <SubmitButton type="submit">
-                        <SubmitButtonIcon className="icon" />
-                        <span className="text">{submitButtonText}</span>
-                      </SubmitButton>
-                    </Form>
-                    <p tw="mt-6 text-xs text-gray-600 text-center">
-                      <a
-                        href={forgotPasswordUrl}
-                        tw="border-b border-gray-500 border-dotted"
-                      >
-                        Forgot Password ?
-                      </a>
-                    </p>
-                    <p tw="mt-8 text-sm text-gray-600 text-center">
-                      Don't have an account?{" "}
-                      {/* <a
+            <Container>
+              {this.state.isLoading && <Spinner asOverlay />}
+
+              <Content>
+                <MainContainer>
+                  <LogoLink href={logoLinkUrl}>
+                    <LogoImage src={logo} />
+                  </LogoLink>
+                  <MainContent>
+                    <Heading>{headingText}</Heading>
+                    <FormContainer>
+                      <SocialButtonsContainer>
+                        {socialButtons.map((socialButton, index) => (
+                          <SocialButton key={index} href={socialButton.url}>
+                            <span className="iconContainer">
+                              <img
+                                src={socialButton.iconImageSrc}
+                                className="icon"
+                                alt=""
+                              />
+                            </span>
+                            <span className="text">{socialButton.text}</span>
+                          </SocialButton>
+                        ))}
+                      </SocialButtonsContainer>
+                      <DividerTextContainer>
+                        <DividerText>Or Sign in with your e-mail</DividerText>
+                      </DividerTextContainer>
+                      <Form onSubmit={this.onSubmitHandler}>
+                        <Input
+                          type="email"
+                          placeholder="Email"
+                          name="email"
+                          value={this.state.email}
+                          onChange={this.onChangeHandler}
+                        />
+                        <Input
+                          type="password"
+                          placeholder="Password"
+                          name="password"
+                          value={this.state.passoword}
+                          onChange={this.onChangeHandler}
+                        />
+                        <SubmitButton type="submit">
+                          <SubmitButtonIcon className="icon" />
+                          <span className="text">{submitButtonText}</span>
+                        </SubmitButton>
+                      </Form>
+                      <p tw="mt-6 text-xs text-gray-600 text-center">
+                        <a
+                          href={forgotPasswordUrl}
+                          tw="border-b border-gray-500 border-dotted"
+                        >
+                          Forgot Password ?
+                        </a>
+                      </p>
+                      <p tw="mt-8 text-sm text-gray-600 text-center">
+                        Don't have an account?{" "}
+                        {/* <a
                     href={signInUrl}
                     tw="border-b border-gray-500 border-dotted"
                   > */}
-                      <Link to="/signup">Sign Up</Link>
-                      {/* </a> */}
-                    </p>
-                  </FormContainer>
-                </MainContent>
-              </MainContainer>
-              <IllustrationContainer>
-                <IllustrationImage imageSrc={illustrationImageSrc} />
-              </IllustrationContainer>
-            </Content>
-          </Container>
-        </AnimationRevealPage>
+                        <Link to="/signup">Sign Up</Link>
+                        {/* </a> */}
+                      </p>
+                    </FormContainer>
+                  </MainContent>
+                </MainContainer>
+                <IllustrationContainer>
+                  <IllustrationImage imageSrc={illustrationImageSrc} />
+                </IllustrationContainer>
+              </Content>
+            </Container>
+          </AnimationRevealPage>
+        )}
       </>
     );
   }
