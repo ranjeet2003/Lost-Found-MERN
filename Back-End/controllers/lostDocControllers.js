@@ -65,7 +65,7 @@ const lostInfo = async (req, res, next) => {
     logger: (m) => console.log(m),
   })
     .then(({ data: { text } }) => {
-      // console.log(text);
+      console.log(text);
       // docs: createdDoc.toObject({ getters: true });
 
       // ocrData = text;

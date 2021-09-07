@@ -176,12 +176,10 @@ class Login extends Component {
       <>
         <ErrorModel error={this.state.isError} onClear={this.errorHandler} />
         {this.state.isLoggedIn ? (
-          <Router>
-            <Route>
-              {window.history.pushState("/", "Page 2", "/")}
-              <SaaSProductLandingPage />
-            </Route>
-          </Router>
+          <>
+            {window.history.pushState("/", "Page 2", "/")}
+            <SaaSProductLandingPage />
+          </>
         ) : (
           <AnimationRevealPage>
             <Header roundedHeaderButton={true} name={this.state.username} />

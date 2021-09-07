@@ -159,12 +159,10 @@ export default class Signup extends Component {
       <>
         <ErrorModel error={this.state.isError} onClear={this.errorHandler} />
         {this.state.isSignedUp ? (
-          <Router>
-            <Route>
-              {window.history.pushState("/", "Page 2", "/")}
-              <SaaSProductLandingPage />
-            </Route>
-          </Router>
+          <>
+            {window.history.pushState("/", "Page 2", "/")}
+            <SaaSProductLandingPage />
+          </>
         ) : (
           <AnimationRevealPage>
             {/* <Navbar roundedHeaderButton={true} /> */}
