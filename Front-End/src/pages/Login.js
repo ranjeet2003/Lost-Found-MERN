@@ -180,6 +180,7 @@ class Login extends Component {
         {this.state.isLoggedIn ? (
           <Router>
             <Route>
+              {window.history.pushState("/", "Page 2", "/")}
               <SaaSProductLandingPage />
             </Route>
           </Router>
