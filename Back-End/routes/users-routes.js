@@ -12,6 +12,7 @@ router.post("/login", usersController.login);
 router.get("/logout", usersController.logout);
 router.get("/numUser", usersController.totalUser);
 router.post("/sendOTP", usersController.sendOTP);
+router.post("/validateOTP", usersController.validateOTP);
 
 // Protect all routes after this middleware
 // All routes are protected after this middleware.

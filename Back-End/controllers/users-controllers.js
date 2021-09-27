@@ -126,6 +126,27 @@ exports.sendOTP = (req, res, next) => {
     });
 };
 
+exports.validateOTP = (req, res, next) => {
+  const { mobile, otp } = req.body;
+  if (req.body.mobile && req.body.otp.length === 4) {
+    client.verify
+      .services(process.env.TWILIO_SERVICE_ID)
+      .verificationChecks.create({
+        to: mobile,
+        code: otp,
+      })
+      .then((data) => {
+        if (data.status === "approved") {
+          res.status(200).json({ status: true, resData: data });
+        } else {
+          res.status(400).json({ status: false, resData: data });
+        }
+      });
+  } else {
+    res.status(400).json({ status: false, resData: data });
+  }
+};
+
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) Getting token and check of it's there
   let token;
