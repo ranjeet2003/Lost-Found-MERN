@@ -25,7 +25,10 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// CORS
 app.use((req, res, next) => {
+  // res.setHeader("Access-Control-Allow-Origin", "http://covin.gov.in/bookAppointment");
+
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -52,18 +55,21 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || "An unknown error occurred!" });
 });
 
+const PASSWORD = process.env.MONGO_PASSWORD;
+
 mongoose
   .connect(
-    "mongodb+srv://ranjeet:ranjeet7537@cluster0.kxva0.mongodb.net/LFDetails?retryWrites=true&w=majority",
+    `mongodb+srv://ranjeet:${PASSWORD}@cluster0.kxva0.mongodb.net/LFDetails?retryWrites=true&w=majority`,
     { useNewUrlParser: true, useUnifiedTopology: true },
     (err) => {
-      console.log("Connection Succesfull");
+      console.log(err);
     }
   )
   .then(() => {
-    console.log("Connected to MongoDB");
     app.listen(5555);
+    console.log("Connection Successfull");
   })
   .catch((err) => {
+    console.log("Catch error");
     console.log(err);
   });

@@ -12,6 +12,9 @@ import EmailIllustrationSrc from "images/email-illustration.svg";
 import Header from "components/hero/CustomHeader.js";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 
+import ErrorModel from "../../helpers/ErrorModal";
+import Spinner from "../../helpers/LoadingSpinner";
+
 const Container = tw.div`relative`;
 const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
@@ -81,7 +84,6 @@ export default class FoundSomething extends Component {
   onSubmitHandler = async (event) => {
     // window.alert("The form data is " + JSON.stringify(this.state));
     event.preventDefault();
-    this.setState({ isLoading: true });
 
     /*
     try {
@@ -136,18 +138,28 @@ export default class FoundSomething extends Component {
       redirect: "follow",
     };
 
-    fetch("http://localhost:5555/api/docs/foundDocs", requestOptions)
-      .then((response) => response.text())
-      .then((result) => console.log(result))
-      .catch((error) => {
-        console.log("error", error);
-        this.setState({
-          isError:
-            error.message || "Something Went Wrong, Please Try Again Later",
+    try {
+      this.setState({ isLoading: true });
+      console.log(this.state.isLoading);
+      fetch("http://localhost:5555/api/docs/foundDocs", requestOptions)
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        .catch((error) => {
+          console.log("error", error);
+          this.setState({
+            isError:
+              error.message || "Something Went Wrong, Please Try Again Later",
+          });
         });
-      });
 
-    this.setState({ isLoading: false });
+      this.setState({ isLoading: false });
+      console.log(this.state.isLoading);
+    } catch (err) {
+      console.log(err);
+      this.setState({
+        isError: err.message || "Something Went Wrong, Please Try Again Later",
+      });
+    }
   };
 
   fileHandler(file) {
@@ -168,69 +180,71 @@ export default class FoundSomething extends Component {
     ),
     description = "Please upload the details of document that you've found and make sure all details are correct and image is clear because we will use these details to match your docs.",
     submitButtonText = "Upload Data",
-    formAction = "#",
-    formMethod = "get",
     textOnLeft = true
   ) {
     return (
-      <AnimationRevealPage>
-        <Header roundedHeaderButton={true} />
-        <Container>
-          <TwoColumn>
-            <ImageColumn>
-              <Image imageSrc={EmailIllustrationSrc} />
-            </ImageColumn>
-            <TextColumn textOnLeft={textOnLeft}>
-              <TextContent>
-                {subheading && <Subheading>{subheading}</Subheading>}
-                <Heading>{heading}</Heading>
-                {description && <Description>{description}</Description>}
-                <Form
-                  onSubmit={this.onSubmitHandler}
-                  encType="multipart/form-data"
-                >
-                  <Input
-                    type="text"
-                    name="docName"
-                    placeholder="Document Name e.g marksheet."
-                    value={this.state.docName}
-                    onChange={this.onChangeHandler}
-                  />
-                  <Input
-                    type="text"
-                    name="docSerial"
-                    placeholder="Enter any serial number or unique number."
-                    value={this.state.docSerial}
-                    onChange={this.onChangeHandler}
-                  />
-                  <Input
-                    type="text"
-                    name="docDescription"
-                    placeholder="Describe something about that doc."
-                    value={this.state.docDescription}
-                    onChange={this.onChangeHandler}
-                  />
-                  <br />
-                  {/* <FileBase onDone={(file) => this.fileHandler(file)} /> */}
-                  <Input
-                    type="file"
-                    id="fileItem"
-                    name="file"
-                    placeholder="Upload file here."
-                    // value={this.state.docDescription}
-                    onChange={this.onChangeHandlerFile}
-                  />
-                  <SubmitButton type="submit">
-                    {!this.state.isLoading
-                      ? submitButtonText
-                      : "Uploading data..."}
-                  </SubmitButton>
-                </Form>
-              </TextContent>
-            </TextColumn>
-          </TwoColumn>
-        </Container>
-      </AnimationRevealPage>
+      <>
+        <ErrorModel error={this.state.isError} onClear={this.errorHandler} />
+        <AnimationRevealPage>
+          <Header roundedHeaderButton={true} />
+          <Container>
+            {this.state.isLoading && <Spinner asOverlay />}
+            <TwoColumn>
+              <ImageColumn>
+                <Image imageSrc={EmailIllustrationSrc} />
+              </ImageColumn>
+              <TextColumn textOnLeft={textOnLeft}>
+                <TextContent>
+                  {subheading && <Subheading>{subheading}</Subheading>}
+                  <Heading>{heading}</Heading>
+                  {description && <Description>{description}</Description>}
+                  <Form
+                    onSubmit={this.onSubmitHandler}
+                    encType="multipart/form-data"
+                  >
+                    <Input
+                      type="text"
+                      name="docName"
+                      placeholder="Document Name e.g marksheet."
+                      value={this.state.docName}
+                      onChange={this.onChangeHandler}
+                    />
+                    <Input
+                      type="text"
+                      name="docSerial"
+                      placeholder="Enter any serial number or unique number."
+                      value={this.state.docSerial}
+                      onChange={this.onChangeHandler}
+                    />
+                    <Input
+                      type="text"
+                      name="docDescription"
+                      placeholder="Describe something about that doc."
+                      value={this.state.docDescription}
+                      onChange={this.onChangeHandler}
+                    />
+                    <br />
+                    {/* <FileBase onDone={(file) => this.fileHandler(file)} /> */}
+                    <Input
+                      type="file"
+                      id="fileItem"
+                      name="file"
+                      placeholder="Upload file here."
+                      // value={this.state.docDescription}
+                      onChange={this.onChangeHandlerFile}
+                    />
+                    <SubmitButton type="submit">
+                      {!this.state.isLoading
+                        ? submitButtonText
+                        : "Uploading data..."}
+                    </SubmitButton>
+                  </Form>
+                </TextContent>
+              </TextColumn>
+            </TwoColumn>
+          </Container>
+        </AnimationRevealPage>
+      </>
     );
   }
 }

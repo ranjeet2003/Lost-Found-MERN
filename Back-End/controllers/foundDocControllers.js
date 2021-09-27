@@ -70,11 +70,12 @@ const foundInfo = async (req, res, next) => {
           if (err) console.log(err);
           else {
             if (!data) {
-              const error = new HttpError(
-                "Your document did not found on database, Please try after some time.",
-                401
-              );
-              return next(error);
+              // const error = new HttpError(
+              //   "Your uploaded document did not found on database, Please wait for other user to upload same document.",
+              //   401
+              // );
+              isDocMatched = false;
+              // return next(error);
             } else if (data.encText === ocrData) {
               isDocMatched = true;
             }

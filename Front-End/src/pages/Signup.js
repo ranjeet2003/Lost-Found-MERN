@@ -17,6 +17,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import googleIconImageSrc from "images/google-icon.png";
 import twitterIconImageSrc from "images/twitter-icon.png";
 import { ReactComponent as SignUpIcon } from "feather-icons/dist/icons/user-plus.svg";
+import { ReactComponent as PhoneIncoming } from "feather-icons/dist/icons/phone-incoming.svg";
+
 // import Navbar from "../components/headers/light";
 import Header from "components/hero/CustomHeader.js";
 
@@ -75,6 +77,7 @@ export default class Signup extends Component {
       isLoading: false,
       isError: null,
       isSignedUp: false,
+      otp: "",
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -152,6 +155,8 @@ export default class Signup extends Component {
     ],
     submitButtonText = "Sign Up",
     SubmitButtonIcon = SignUpIcon,
+    OTPButtonText = "Get OTP",
+    OTPButtonIcon = PhoneIncoming,
     tosUrl = "#",
     privacyPolicyUrl = "#"
   ) {
@@ -216,6 +221,18 @@ export default class Signup extends Component {
                           placeholder="Mobile Number"
                           name="mobileNo"
                           value={this.state.mobileNo}
+                          onChange={this.onChangeHandler}
+                        />
+                        <SubmitButton type="button">
+                          <OTPButtonIcon className="icon" />
+                          <span className="text">{OTPButtonText}</span>
+                        </SubmitButton>
+
+                        <Input
+                          type="text"
+                          placeholder="Enter OTP"
+                          name="otp"
+                          value={this.state.otp}
                           onChange={this.onChangeHandler}
                         />
                         <Input
