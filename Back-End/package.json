@@ -24,6 +24,7 @@
     "node-tesseract": "^0.2.7",
     "node-tesseract-ocr": "^2.2.1",
     "tesseract.js": "^2.1.4",
+    "twilio": "^3.68.0",
     "uuid": "^3.3.3",
     "validator": "^13.6.0"
   },

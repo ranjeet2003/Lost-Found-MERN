@@ -6,12 +6,18 @@ const { validationResult } = require("express-validator");
 const HttpError = require("../util/http-error");
 const User = require("../models/user");
 const AppError = require("./../util/appError");
+require("dotenv").config({ path: "./config.env" });
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
+
+const client = require("twilio")(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
@@ -105,6 +111,19 @@ exports.logout = (req, res) => {
     status: "success",
     message: "You have been successfully logged out !",
   });
+};
+
+exports.sendOTP = (req, res, next) => {
+  const { mobile } = req.body;
+  client.verify
+    .services(process.env.TWILIO_SERVICE_ID)
+    .verifications.create({
+      to: mobile,
+      channel: "sms",
+    })
+    .then((data) => {
+      res.status(200).json({ status: true, resData: data });
+    });
 };
 
 exports.protect = catchAsync(async (req, res, next) => {
