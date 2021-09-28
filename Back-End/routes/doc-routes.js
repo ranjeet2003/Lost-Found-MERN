@@ -31,14 +31,14 @@ const router = express.Router();
 
 router.post(
   "/lostDocs",
-  // usersController.protect,
+  usersController.protect,
   lostDocControllers.uploadDocs,
   lostDocControllers.lostInfo
 );
 
 router.post(
   "/foundDocs",
-  // usersController.protect,
+  usersController.protect,
   foundDocController.uploadDocs,
   foundDocController.foundInfo
 );

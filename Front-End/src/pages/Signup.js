@@ -18,6 +18,7 @@ import googleIconImageSrc from "images/google-icon.png";
 import twitterIconImageSrc from "images/twitter-icon.png";
 import { ReactComponent as SignUpIcon } from "feather-icons/dist/icons/user-plus.svg";
 import { ReactComponent as PhoneIncoming } from "feather-icons/dist/icons/phone-incoming.svg";
+import { ReactComponent as VerifyIcon } from "feather-icons/dist/icons/check-circle.svg";
 
 // import Navbar from "../components/headers/light";
 import Header from "components/hero/CustomHeader.js";
@@ -157,6 +158,7 @@ export default class Signup extends Component {
     SubmitButtonIcon = SignUpIcon,
     OTPButtonText = "Get OTP",
     OTPButtonIcon = PhoneIncoming,
+    VerifyButtonIcon = VerifyIcon,
     tosUrl = "#",
     privacyPolicyUrl = "#"
   ) {
@@ -235,6 +237,10 @@ export default class Signup extends Component {
                           value={this.state.otp}
                           onChange={this.onChangeHandler}
                         />
+                        <SubmitButton type="button">
+                          <VerifyButtonIcon className="icon" />
+                          <span className="text">Verify OTP</span>
+                        </SubmitButton>
                         <Input
                           type="password"
                           placeholder="Password"
