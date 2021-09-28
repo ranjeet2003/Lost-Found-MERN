@@ -100,7 +100,7 @@ const lostInfo = async (req, res, next) => {
               image: req.file.filename,
               encText: ocrData,
               isMatched: isDocMatched,
-              uploadedBy: req.user.name,
+              lupoadedBy: req.user.name,
               userEmail: req.user.email,
               userMobilrNo: req.user.mobile,
             });
