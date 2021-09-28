@@ -56,7 +56,7 @@ const foundInfo = async (req, res, next) => {
   const imageName = temp1 + req.file.filename;
 
   Tesseract.recognize(imageName, "eng", {
-    logger: (m) => console.log(m),
+    // logger: (m) => console.log(m),
   })
     .then(({ data: { text } }) => {
       const hash = crypto.createHash("sha256").update(text).digest("base64");

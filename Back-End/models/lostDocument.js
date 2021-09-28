@@ -7,13 +7,12 @@ const documentSchema = new Schema({
   description: { type: String, required: true },
   image: { type: String, required: true },
   serial: { type: String },
-  // isLost: { type: Boolean, required: true },
-  // img: {
-  //   data: Buffer,
-  //   contentType: String,
-  // },
   encText: { type: String },
   isMatched: { type: Boolean },
+  uploadedBy: { type: String, required: true },
+  userEmail: { type: String, required: true },
+  userMobilrNo: { type: String, required: true },
+  timeStamp: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model("lostDocument", documentSchema);

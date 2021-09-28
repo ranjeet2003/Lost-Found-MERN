@@ -38,6 +38,7 @@ exports.uploadDocs = upload.single("img");
 
 const lostInfo = async (req, res, next) => {
   //   console.log(typeof req.file.filename);
+  // console.log(req.user);
   var obj = {
     name: req.body.name,
     description: req.body.description,
@@ -62,10 +63,10 @@ const lostInfo = async (req, res, next) => {
   const imageName = temp1 + req.file.filename;
 
   Tesseract.recognize(imageName, "eng", {
-    logger: (m) => console.log(m),
+    // logger: (m) => console.log(m),
   })
     .then(({ data: { text } }) => {
-      console.log(text);
+      // console.log(text);
       // docs: createdDoc.toObject({ getters: true });
 
       // ocrData = text;
@@ -99,6 +100,9 @@ const lostInfo = async (req, res, next) => {
               image: req.file.filename,
               encText: ocrData,
               isMatched: isDocMatched,
+              uploadedBy: req.user.name,
+              userEmail: req.user.email,
+              userMobilrNo: req.user.mobile,
             });
             createdDoc.save();
             res
