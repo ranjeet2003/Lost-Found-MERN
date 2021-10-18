@@ -11,7 +11,7 @@ const documentSchema = new Schema({
   isMatched: { type: Boolean },
   uploadedBy: { type: String, required: true },
   userEmail: { type: String, required: true },
-  userMobilrNo: { type: String, required: true },
+  userMobileNo: { type: String, required: true },
   timeStamp: { type: Date, default: Date.now },
 });
 

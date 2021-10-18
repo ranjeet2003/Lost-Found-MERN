@@ -88,7 +88,7 @@ const foundInfo = async (req, res, next) => {
               isMatched: isDocMatched,
               uploadedBy: req.user.name,
               userEmail: req.user.email,
-              userMobilrNo: req.user.mobile,
+              userMobileNo: req.user.mobile,
             });
             createdDoc.save();
             res
