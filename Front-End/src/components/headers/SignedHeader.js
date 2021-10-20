@@ -93,7 +93,7 @@ export default class SignedHeader extends Component {
           Found Something{" "}
         </Link>
         {/* <NavLink href="/#">Contact Us</NavLink> */}
-        <Link to="/login" tw="lg:ml-12!">
+        {/* <Link to="/login" tw="lg:ml-12!">
           Login
         </Link>
         <Link
@@ -101,7 +101,7 @@ export default class SignedHeader extends Component {
           to="/signup"
         >
           Sign Up
-        </Link>
+        </Link> */}
       </NavLinks>,
     ];
 

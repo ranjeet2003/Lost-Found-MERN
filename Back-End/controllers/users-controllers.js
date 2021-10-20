@@ -6,6 +6,7 @@ const { validationResult } = require("express-validator");
 const HttpError = require("../util/http-error");
 const User = require("../models/user");
 const AppError = require("./../util/appError");
+const Email = require("../util/email");
 require("dotenv").config({ path: "./config.env" });
 
 const signToken = (id) => {
@@ -81,6 +82,9 @@ exports.signup = catchAsync(async (req, res, next) => {
     mobile: req.body.mobile,
     password: req.body.password,
   });
+
+  await new Email(newUser).sendWelcome();
+
   createSendToken(newUser, 201, res);
 });
 

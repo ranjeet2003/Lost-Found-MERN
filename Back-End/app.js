@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
-
 const docRoutes = require("./routes/doc-routes");
 const usersRoutes = require("./routes/users-routes");
 const HttpError = require("./util/http-error");
@@ -12,6 +11,9 @@ require("dotenv").config({ path: "./config.env" });
 // const newDocRoute = require("./routes/docRoute");
 
 const app = express();
+
+app.set("view engine", "pug");
+
 app.use(cors());
 // app.use(express.bodyParser({ limit: "50mb" }));
 app.use(bodyParser.json({ limit: "50mb" }));
