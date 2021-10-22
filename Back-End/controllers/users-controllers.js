@@ -19,13 +19,9 @@ const signToken = (id) => {
   });
 };
 
-// const client = require("twilio")(
-//   process.env.TWILIO_ACCOUNT_SID,
-//   process.env.TWILIO_AUTH_TOKEN
-// );
-
-sgMail.setApiKey(
-  "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"
+const client = require("twilio")(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
 );
 
 const createSendToken = (user, statusCode, res) => {
@@ -158,7 +154,7 @@ exports.sendOTP = (req, res, next) => {
       channel: "sms",
     })
     .then((data) => {
-      res.status(200).json({ status: true, resData: data });
+      res.status(200).json({ status: true });
     });
 };
 
@@ -173,13 +169,13 @@ exports.validateOTP = (req, res, next) => {
       })
       .then((data) => {
         if (data.status === "approved") {
-          res.status(200).json({ status: true, resData: data });
+          res.status(200).json({ status: true });
         } else {
-          res.status(400).json({ status: false, resData: data });
+          res.status(400).json({ status: true });
         }
       });
   } else {
-    res.status(400).json({ status: false, resData: data });
+    res.status(400).json({ status: false });
   }
 };
 

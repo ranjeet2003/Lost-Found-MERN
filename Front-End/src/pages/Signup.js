@@ -78,7 +78,7 @@ export default class Signup extends Component {
       isLoading: false,
       isError: null,
       isSignedUp: false,
-      otp: "",
+      otpValidate: false,
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -95,35 +95,84 @@ export default class Signup extends Component {
   errorHandler = () => {
     this.setState({ isError: null });
   };
+
+  sendOtpHandler = async (event) => {
+    event.preventDefault();
+    try {
+      if (!this.state.mobileNo) {
+        this.setState({
+          isError: "Please provide 10-Digit valid mobile number",
+        });
+      } else {
+        this.setState({ isLoading: true });
+        const response = await fetch(
+          "http://localhost:5555/api/users/sendOTP",
+          {
+            method: "POST",
+            headers: {
+              "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+              mobile: "+91" + this.state.mobileNo,
+            }),
+          }
+        );
+        // console.log(mobile);
+        const responseData = await response.json();
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+        console.log(responseData.status);
+        if (responseData.status) {
+          this.setState({
+            isLoading: false,
+          });
+          console.log("OTP sent on +91" + this.state.mobileNo);
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      this.setState({
+        isError: err.message || "Something Went Wrong, Please Try Again Later",
+      });
+    }
+  };
+
   onSubmitHandler = async (event) => {
     event.preventDefault();
     // window.alert("The form data is " + JSON.stringify(this.state));
     // console.log(email);
     try {
-      this.setState({ isLoading: true });
-      // this.setState({isError: null})
-      const response = await fetch("http://localhost:5555/api/users/signup", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          name: this.state.name,
-          email: this.state.email,
-          mobile: this.state.mobileNo,
-          password: this.state.password,
-        }),
-      });
-      const responseData = await response.json();
-      if (!response.ok) {
-        throw new Error(responseData.message);
-      }
-      console.log(responseData);
-      if (response && responseData.status === "success") {
+      if (!this.state.otpValidate) {
         this.setState({
-          isSignedUp: true,
+          isError: "Please Validate your OTP first",
         });
-        console.log("signed up " + this.state.isSignedUp);
+      } else {
+        this.setState({ isLoading: true });
+        // this.setState({isError: null})
+        const response = await fetch("http://localhost:5555/api/users/signup", {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            name: this.state.name,
+            email: this.state.email,
+            mobile: this.state.mobileNo,
+            password: this.state.password,
+          }),
+        });
+        const responseData = await response.json();
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+        console.log(responseData);
+        if (response && responseData.status === "success") {
+          this.setState({
+            isSignedUp: true,
+          });
+          console.log("signed up " + this.state.isSignedUp);
+        }
       }
 
       // window.alert("Signup Succesfull !" + JSON.stringify(responseData));
@@ -225,7 +274,10 @@ export default class Signup extends Component {
                           value={this.state.mobileNo}
                           onChange={this.onChangeHandler}
                         />
-                        <SubmitButton type="button">
+                        <SubmitButton
+                          type="button"
+                          onClick={this.sendOtpHandler}
+                        >
                           <OTPButtonIcon className="icon" />
                           <span className="text">{OTPButtonText}</span>
                         </SubmitButton>
