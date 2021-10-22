@@ -11,21 +11,12 @@ const nodemailer = require("nodemailer");
 const mailGun = require("nodemailer-mailgun-transport");
 const log = console.log;
 const sendEmail = require("../util/email");
+const { CourierClient } = require("@trycourier/courier");
+require("dotenv").config({ path: "./config.env" });
 
-// const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const accountSid = "ACe112366ab0e12c477bf218ffaffcce71";
-// const authToken = process.env.TWILIO_AUTH_TOKEN;
-const authToken = "992bda44a1eb424833f92d04311bc8c3";
-const client = require("twilio")(accountSid, authToken);
+// const client = require("twilio")(accountSid, authToken);
 
-const auth = {
-  auth: {
-    api_key: "a96793575b8e5586b43683ddc7c4e6d2-65b08458-2acc0862",
-    domain: "lost-found.team",
-  },
-};
-
-let transporter = nodemailer.createTransport(mailGun(auth));
+// let transporter = nodemailer.createTransport(mailGun(auth));
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -90,6 +81,9 @@ const lostInfo = async (req, res, next) => {
     .then(() => {
       // console.log(ocrData);
       let isDocMatched = false;
+      const courier = CourierClient({
+        authorizationToken: process.env.COURIER_AUTH_TOKEN,
+      });
       let MatchedCurser = FoundDocument.findOne({ encText: ocrData }).exec(
         (err, data) => {
           if (err) console.log(err);
@@ -102,16 +96,46 @@ const lostInfo = async (req, res, next) => {
             }
 
             if (isDocMatched) {
-              const message = `Your lost document has already been uploaded by ${req.user.name}.\nKindly contact
-              the mobile no ${req.user.mobile} and email ${req.user.email} to get back your document.`;
-
-              sendEmail({
-                email: req.user.email,
-                subject: "Update on your document upload",
-                message,
-              })
+              courier
+                .send({
+                  brand: process.env.COURIER_BRAND,
+                  eventId: "65QQE345PJMGDPHQNS0K80KBQDE0",
+                  recipientId: "107dab72-6cdc-4de6-8cb0-1448fbf24a31",
+                  profile: {
+                    email: req.user.email,
+                  },
+                  data: {
+                    lostUserName: req.user.name,
+                    userName: data.uploadedBy,
+                    userMobileNo: data.userMobileNo,
+                    userEmail: data.userEmail,
+                    favoriteAdjective: "awesomeness",
+                  },
+                  override: {},
+                })
                 .then(() => {
-                  console.log("Email delivered successfully");
+                  console.log("Matching Email sent");
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            } else {
+              courier
+                .send({
+                  brand: process.env.COURIER_BRAND,
+                  eventId: "E0MHMBRG4TMC6TQBZBA4CGSE8JWW",
+                  recipientId: "d1deefb8-c8bc-40a7-8c9d-6e59e6b2bee4",
+                  profile: {
+                    email: req.user.email,
+                  },
+                  data: {
+                    userName: req.user.name,
+                    favoriteAdjective: "awesomeness",
+                  },
+                  override: {},
+                })
+                .then(() => {
+                  console.log("Not Matching Email sent");
                 })
                 .catch((err) => {
                   console.log(err);
