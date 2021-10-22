@@ -94,19 +94,20 @@ exports.signup = catchAsync(async (req, res, next) => {
   const message = "Thanks User for signup";
 
   const courier = CourierClient({
-    authorizationToken: "pk_prod_FZMJ6GJDQD4R5TMXMSMMPS5B3CCF",
+    authorizationToken: process.env.COURIER_AUTH_TOKEN,
   });
 
   // const { messageId } = await courier.send({
   courier
     .send({
-      eventId: "courier-quickstart",
-      recipientId: "ranjeet@mailsac.com",
+      eventId: "personalized-welcome-email",
+      recipientId: "ranjeetgautam13032@gmail.com",
       data: {
-        favoriteAdjective: "awesomeness",
+        firstname: req.body.name,
+        favoriteAdjective: "Thank You",
       },
       profile: {
-        email: "ranjeet@mailsac.com",
+        email: req.body.email,
       },
     })
     .then(() => {
