@@ -78,6 +78,7 @@ export default class Signup extends Component {
       isLoading: false,
       isError: null,
       isSignedUp: false,
+      otp: "",
       otpValidate: false,
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
@@ -138,6 +139,50 @@ export default class Signup extends Component {
     }
   };
 
+  validateOtpHandler = async (event) => {
+    event.preventDefault();
+    try {
+      if (!this.state.otp) {
+        this.setState({
+          isError: "Please enter 4-Digit OTP recieved on your mobile number",
+        });
+      } else {
+        this.setState({ isLoading: true });
+        const response = await fetch(
+          "http://localhost:5555/api/users/validateOTP",
+          {
+            method: "POST",
+            headers: {
+              "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+              mobile: "+91" + this.state.mobileNo,
+              otp: this.state.otp,
+            }),
+          }
+        );
+        // console.log(mobile);
+        const responseData = await response.json();
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+        console.log(responseData.status);
+        if (responseData.status) {
+          this.setState({
+            isLoading: false,
+            otpValidate: true,
+          });
+          console.log("OTP verified on +91" + this.state.mobileNo);
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      this.setState({
+        isError: err.message || "Something Went Wrong, Please Try Again Later",
+      });
+    }
+  };
+
   onSubmitHandler = async (event) => {
     event.preventDefault();
     // window.alert("The form data is " + JSON.stringify(this.state));
@@ -174,9 +219,6 @@ export default class Signup extends Component {
           console.log("signed up " + this.state.isSignedUp);
         }
       }
-
-      // window.alert("Signup Succesfull !" + JSON.stringify(responseData));
-      // <SweetAlert />;
     } catch (err) {
       console.log(err);
       this.setState({
@@ -289,9 +331,17 @@ export default class Signup extends Component {
                           value={this.state.otp}
                           onChange={this.onChangeHandler}
                         />
-                        <SubmitButton type="button">
+                        <SubmitButton
+                          type="button"
+                          onClick={this.validateOtpHandler}
+                        >
                           <VerifyButtonIcon className="icon" />
-                          <span className="text">Verify OTP</span>
+                          {/* <span className="text">Verify OTP</span> */}
+                          {this.state.otpValidate ? (
+                            <span className="text">Verified</span>
+                          ) : (
+                            <span className="text">Verify OTP</span>
+                          )}
                         </SubmitButton>
                         <Input
                           type="password"
