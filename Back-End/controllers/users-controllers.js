@@ -6,7 +6,11 @@ const { validationResult } = require("express-validator");
 const HttpError = require("../util/http-error");
 const User = require("../models/user");
 const AppError = require("./../util/appError");
-const Email = require("../util/email");
+// const Email = require("../util/email");
+const sendEmail = require("../util/email");
+const sgMail = require("@sendgrid/mail");
+const { CourierClient } = require("@trycourier/courier");
+
 require("dotenv").config({ path: "./config.env" });
 
 const signToken = (id) => {
@@ -15,9 +19,13 @@ const signToken = (id) => {
   });
 };
 
-const client = require("twilio")(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
+// const client = require("twilio")(
+//   process.env.TWILIO_ACCOUNT_SID,
+//   process.env.TWILIO_AUTH_TOKEN
+// );
+
+sgMail.setApiKey(
+  "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"
 );
 
 const createSendToken = (user, statusCode, res) => {
@@ -83,7 +91,30 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
   });
 
-  await new Email(newUser).sendWelcome();
+  const message = "Thanks User for signup";
+
+  const courier = CourierClient({
+    authorizationToken: "pk_prod_FZMJ6GJDQD4R5TMXMSMMPS5B3CCF",
+  });
+
+  // const { messageId } = await courier.send({
+  courier
+    .send({
+      eventId: "courier-quickstart",
+      recipientId: "ranjeet@mailsac.com",
+      data: {
+        favoriteAdjective: "awesomeness",
+      },
+      profile: {
+        email: "ranjeet@mailsac.com",
+      },
+    })
+    .then(() => {
+      console.log("Email sent");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
   createSendToken(newUser, 201, res);
 });
