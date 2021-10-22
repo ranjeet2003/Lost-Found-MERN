@@ -1,16 +1,14 @@
 const { validationResult } = require("express-validator");
 var crypto = require("crypto");
-
 const HttpError = require("../util/http-error");
-
 const Document = require("../models/foundDocument");
 const LostDocument = require("../models/lostDocument");
-
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-
 const Tesseract = require("tesseract.js");
+const { CourierClient } = require("@trycourier/courier");
+require("dotenv").config({ path: "./config.env" });
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -64,6 +62,9 @@ const foundInfo = async (req, res, next) => {
     })
     .then(() => {
       let isDocMatched = false;
+      const courier = CourierClient({
+        authorizationToken: process.env.COURIER_AUTH_TOKEN,
+      });
 
       let MatchedCurser = LostDocument.findOne({ encText: ocrData }).exec(
         (err, data) => {
@@ -79,6 +80,54 @@ const foundInfo = async (req, res, next) => {
             } else if (data.encText === ocrData) {
               isDocMatched = true;
             }
+
+            if (isDocMatched) {
+              courier
+                .send({
+                  brand: process.env.COURIER_BRAND,
+                  eventId: "65QQE345PJMGDPHQNS0K80KBQDE0",
+                  recipientId: "107dab72-6cdc-4de6-8cb0-1448fbf24a31",
+                  profile: {
+                    email: req.user.email,
+                  },
+                  data: {
+                    lostUserName: req.user.name,
+                    userName: data.uploadedBy,
+                    userMobileNo: data.userMobileNo,
+                    userEmail: data.userEmail,
+                    favoriteAdjective: "awesomeness",
+                  },
+                  override: {},
+                })
+                .then(() => {
+                  console.log("Matching Email sent");
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            } else {
+              courier
+                .send({
+                  brand: process.env.COURIER_BRAND,
+                  eventId: "E0MHMBRG4TMC6TQBZBA4CGSE8JWW",
+                  recipientId: "d1deefb8-c8bc-40a7-8c9d-6e59e6b2bee4",
+                  profile: {
+                    email: req.user.email,
+                  },
+                  data: {
+                    userName: req.user.name,
+                    favoriteAdjective: "awesomeness",
+                  },
+                  override: {},
+                })
+                .then(() => {
+                  console.log("Not Matching Email sent");
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+
             const createdDoc = new Document({
               name: obj.name,
               description: obj.description,
