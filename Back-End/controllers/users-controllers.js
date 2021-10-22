@@ -101,7 +101,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   courier
     .send({
       eventId: "personalized-welcome-email",
-      recipientId: "ranjeetgautam13032@gmail.com",
+      recipientId: process.env.COURIER_RECIPIENT_ID,
       data: {
         firstname: req.body.name,
         favoriteAdjective: "Thank You",
