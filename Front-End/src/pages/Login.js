@@ -50,9 +50,9 @@ const DividerTextContainer = tw.div`my-12 border-b text-center relative`;
 const DividerText = tw.div`leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform -translate-y-1/2 absolute inset-x-0 top-1/2 bg-transparent`;
 
 const Form = tw.form`mx-auto max-w-xs`;
-const Input = tw.input`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5 first:mt-0`;
+const Input = tw.input`w-full  px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-green-500 focus:bg-white mt-5 first:mt-0`;
 const SubmitButton = styled.button`
-  ${tw`mt-5 tracking-wide font-semibold bg-primary-500 text-gray-100 w-full py-4 rounded-lg hover:bg-primary-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none`}
+  ${tw`mt-5 tracking-wide font-semibold bg-green-500 text-gray-100 w-full py-4 rounded-lg hover:bg-primary-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none`}
   .icon {
     ${tw`w-6 h-6 -ml-2`}
   }
@@ -111,6 +111,11 @@ class Login extends Component {
   onSubmitHandler = async (event) => {
     event.preventDefault();
     try {
+      // if (!this.state.email || !this.state.mobile) {
+      //   this.setState({
+      //     isError: "Please enter your E-mail and password",
+      //   });
+      // } else {
       this.setState({ isLoading: true });
       const response = await fetch("http://localhost:5555/api/users/login", {
         method: "POST",
@@ -139,8 +144,8 @@ class Login extends Component {
         });
         console.log("Logged In" + this.state.isLoggedIn);
       }
-
       this.setState({ username: responseData.name });
+      // }
       // console.log(this.state.username);
     } catch (err) {
       console.log(err);
@@ -195,23 +200,6 @@ class Login extends Component {
                   <MainContent>
                     <Heading>{headingText}</Heading>
                     <FormContainer>
-                      <SocialButtonsContainer>
-                        {socialButtons.map((socialButton, index) => (
-                          <SocialButton key={index} href={socialButton.url}>
-                            <span className="iconContainer">
-                              <img
-                                src={socialButton.iconImageSrc}
-                                className="icon"
-                                alt=""
-                              />
-                            </span>
-                            <span className="text">{socialButton.text}</span>
-                          </SocialButton>
-                        ))}
-                      </SocialButtonsContainer>
-                      <DividerTextContainer>
-                        <DividerText>Or Sign in with your e-mail</DividerText>
-                      </DividerTextContainer>
                       <Form onSubmit={this.onSubmitHandler}>
                         <Input
                           type="email"
@@ -232,6 +220,25 @@ class Login extends Component {
                           <span className="text">{submitButtonText}</span>
                         </SubmitButton>
                       </Form>
+                      <DividerTextContainer>
+                        <DividerText>
+                          Or Sign in with your social account
+                        </DividerText>
+                      </DividerTextContainer>
+                      <SocialButtonsContainer>
+                        {socialButtons.map((socialButton, index) => (
+                          <SocialButton key={index} href={socialButton.url}>
+                            <span className="iconContainer">
+                              <img
+                                src={socialButton.iconImageSrc}
+                                className="icon"
+                                alt=""
+                              />
+                            </span>
+                            <span className="text">{socialButton.text}</span>
+                          </SocialButton>
+                        ))}
+                      </SocialButtonsContainer>
                       <p tw="mt-6 text-xs text-gray-600 text-center">
                         <a
                           href={forgotPasswordUrl}

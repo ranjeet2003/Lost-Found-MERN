@@ -95,6 +95,7 @@ const lostInfo = async (req, res, next) => {
               isDocMatched = true;
             }
 
+            /*
             if (isDocMatched) {
               courier
                 .send({
@@ -141,26 +142,7 @@ const lostInfo = async (req, res, next) => {
                   console.log(err);
                 });
             }
-
-            // if (isDocMatched) {
-            // transporter.sendMail(mailOptions, (err, data) => {
-            //   if (err) {
-            //     return log("Error occurs");
-            //   }
-            //   return log("Email sent!!!" + data);
-            // });
-            // }
-
-            // if (isDocMatched) {
-            // client.messages
-            //   .create({
-            //     body: "This is the ship that made the Kessel Run in fourteen parsecs?",
-            //     from: "+12036897715",
-            //     // to: "+91" + req.user.mobile,
-            //     to: "+919506717537",
-            //   })
-            //   .then((message) => console.log(message.sid));
-            // }
+            */
 
             const createdDoc = new Document({
               name: obj.name,

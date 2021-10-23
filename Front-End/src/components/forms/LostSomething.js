@@ -83,35 +83,52 @@ export default class LostSomething extends Component {
 
   onSubmitHandler = async (event) => {
     event.preventDefault();
-    this.setState({ isLoading: true });
+    try {
+      this.setState({ isLoading: true });
+      console.log("isloading: " + this.state.isLoading);
 
-    var formdata = new FormData();
-    formdata.append("name", this.state.docName);
-    formdata.append("description", this.state.docDescription);
-    formdata.append("serial", this.state.docSerial);
-    formdata.append(
-      "img",
-      // fileInput.files[0],
-      this.state.docImage
-    );
+      var formdata = new FormData();
+      formdata.append("name", this.state.docName);
+      formdata.append("description", this.state.docDescription);
+      formdata.append("serial", this.state.docSerial);
+      formdata.append(
+        "img",
+        // fileInput.files[0],
+        this.state.docImage
+      );
 
-    var requestOptions = {
-      method: "POST",
-      body: formdata,
-      redirect: "follow",
-    };
+      var requestOptions = {
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
 
-    fetch("http://localhost:5555/api/docs/lostDocs", requestOptions)
-      .then((response) => response.text())
-      .then((result) => console.log(result))
-      .catch((error) => {
-        console.log("error", error);
-        this.setState({
-          isError:
-            error.message || "Something Went Wrong, Please Try Again Later",
+      const response = await fetch(
+        "http://localhost:5555/api/docs/lostDocs",
+        requestOptions
+      )
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        .catch((error) => {
+          console.log("error", error);
+          this.setState({
+            isError:
+              error.message || "Something Went Wrong, Please Try Again Later",
+          });
         });
+      const responseData = await response.json();
+      if (!response.ok) {
+        throw new Error(responseData.message);
+      }
+      console.log("isloading: " + this.state.isLoading);
+    } catch (err) {
+      console.log(err);
+      this.setState({
+        isError: err.message || "Something Went Wrong, Please Try Again Later",
       });
+    }
     this.setState({ isLoading: false });
+
     // */
   };
 

@@ -31,7 +31,7 @@ const router = express.Router();
 
 router.post(
   "/lostDocs",
-  usersController.protect,
+  // usersController.protect,
   lostDocControllers.uploadDocs,
   lostDocControllers.lostInfo
 );

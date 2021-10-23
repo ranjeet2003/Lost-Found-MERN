@@ -33,6 +33,8 @@ const LogoImage = tw.img`h-12 mx-auto`;
 const MainContent = tw.div`mt-12 flex flex-col items-center`;
 const Heading = tw.h1`text-2xl xl:text-3xl font-extrabold`;
 const FormContainer = tw.div`w-full flex-1 mt-8`;
+const OtpContainer = tw.div` flex flex-row mt-8 gap-2`;
+// const OtpInputContainer = tw.div`col-span-2`;
 
 const SocialButtonsContainer = tw.div`flex flex-col items-center`;
 const SocialButton = styled.a`
@@ -52,9 +54,18 @@ const DividerTextContainer = tw.div`my-12 border-b text-center relative`;
 const DividerText = tw.div`leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform -translate-y-1/2 absolute inset-x-0 top-1/2 bg-transparent`;
 
 const Form = tw.form`mx-auto max-w-xs`;
-const Input = tw.input`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5 first:mt-0`;
+const Input = tw.input`w-full  px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-green-500 focus:bg-white mt-5 first:mt-0`;
 const SubmitButton = styled.button`
-  ${tw`mt-5 tracking-wide font-semibold bg-primary-500 text-gray-100 w-full py-4 rounded-lg hover:bg-primary-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none`}
+  ${tw`mt-5 tracking-wide font-semibold bg-green-500 text-gray-100 w-full py-4 rounded-lg hover:bg-primary-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none`}
+  .icon {
+    ${tw`w-6 h-6 -ml-2`}
+  }
+  .text {
+    ${tw`ml-3`}
+  }
+`;
+const OtpButton = styled.button`
+  ${tw` tracking-tighter font-semibold bg-green-500 text-gray-100 w-full  py-4 rounded-lg hover:bg-primary-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none`}
   .icon {
     ${tw`w-6 h-6 -ml-2`}
   }
@@ -190,7 +201,7 @@ export default class Signup extends Component {
     try {
       if (!this.state.otpValidate) {
         this.setState({
-          isError: "Please Validate your OTP first",
+          isError: "Please verify your OTP first",
         });
       } else {
         this.setState({ isLoading: true });
@@ -277,23 +288,6 @@ export default class Signup extends Component {
                   <MainContent>
                     <Heading>{headingText}</Heading>
                     <FormContainer>
-                      <SocialButtonsContainer>
-                        {socialButtons.map((socialButton, index) => (
-                          <SocialButton key={index} href={socialButton.url}>
-                            <span className="iconContainer">
-                              <img
-                                src={socialButton.iconImageSrc}
-                                className="icon"
-                                alt=""
-                              />
-                            </span>
-                            <span className="text">{socialButton.text}</span>
-                          </SocialButton>
-                        ))}
-                      </SocialButtonsContainer>
-                      <DividerTextContainer>
-                        <DividerText>Or Sign up with your e-mail</DividerText>
-                      </DividerTextContainer>
                       <Form onSubmit={this.onSubmitHandler}>
                         <Input
                           type="text"
@@ -309,40 +303,45 @@ export default class Signup extends Component {
                           value={this.state.email}
                           onChange={this.onChangeHandler}
                         />
-                        <Input
-                          type="text"
-                          placeholder="Mobile Number"
-                          name="mobileNo"
-                          value={this.state.mobileNo}
-                          onChange={this.onChangeHandler}
-                        />
-                        <SubmitButton
-                          type="button"
-                          onClick={this.sendOtpHandler}
-                        >
-                          <OTPButtonIcon className="icon" />
-                          <span className="text">{OTPButtonText}</span>
-                        </SubmitButton>
-
-                        <Input
-                          type="text"
-                          placeholder="Enter OTP"
-                          name="otp"
-                          value={this.state.otp}
-                          onChange={this.onChangeHandler}
-                        />
-                        <SubmitButton
-                          type="button"
-                          onClick={this.validateOtpHandler}
-                        >
-                          <VerifyButtonIcon className="icon" />
-                          {/* <span className="text">Verify OTP</span> */}
-                          {this.state.otpValidate ? (
-                            <span className="text">Verified</span>
-                          ) : (
-                            <span className="text">Verify OTP</span>
-                          )}
-                        </SubmitButton>
+                        <OtpContainer>
+                          {/* <OtpInputContainer> */}
+                          <Input
+                            type="text"
+                            placeholder="Mobile Number"
+                            name="mobileNo"
+                            value={this.state.mobileNo}
+                            onChange={this.onChangeHandler}
+                          />
+                          <OtpButton
+                            type="button"
+                            onClick={this.sendOtpHandler}
+                          >
+                            <OTPButtonIcon className="icon" />
+                            <span className="text">{OTPButtonText}</span>
+                          </OtpButton>
+                          {/* </OtpInputContainer> */}
+                        </OtpContainer>
+                        <OtpContainer>
+                          <Input
+                            type="text"
+                            placeholder="Enter OTP"
+                            name="otp"
+                            value={this.state.otp}
+                            onChange={this.onChangeHandler}
+                          />
+                          <OtpButton
+                            type="button"
+                            onClick={this.validateOtpHandler}
+                          >
+                            <VerifyButtonIcon className="icon" />
+                            {/* <span className="text">Verify OTP</span> */}
+                            {this.state.otpValidate ? (
+                              <span className="text">Verified</span>
+                            ) : (
+                              <span className="text">Verify OTP</span>
+                            )}
+                          </OtpButton>
+                        </OtpContainer>
                         <Input
                           type="password"
                           placeholder="Password"
@@ -354,6 +353,25 @@ export default class Signup extends Component {
                           <SubmitButtonIcon className="icon" />
                           <span className="text">{submitButtonText}</span>
                         </SubmitButton>
+                        <DividerTextContainer>
+                          <DividerText>
+                            Or Sign up with your social account
+                          </DividerText>
+                        </DividerTextContainer>
+                        <SocialButtonsContainer>
+                          {socialButtons.map((socialButton, index) => (
+                            <SocialButton key={index} href={socialButton.url}>
+                              <span className="iconContainer">
+                                <img
+                                  src={socialButton.iconImageSrc}
+                                  className="icon"
+                                  alt=""
+                                />
+                              </span>
+                              <span className="text">{socialButton.text}</span>
+                            </SocialButton>
+                          ))}
+                        </SocialButtonsContainer>
                         <p tw="mt-6 text-xs text-gray-600 text-center">
                           I agree to abide by Lost-Found{" "}
                           <a
