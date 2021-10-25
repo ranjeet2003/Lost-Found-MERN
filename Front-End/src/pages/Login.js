@@ -120,8 +120,11 @@ class Login extends Component {
       const response = await fetch("http://localhost:5555/api/users/login", {
         method: "POST",
         headers: {
-          "Content-type": "application/json",
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Cache: "no-cache",
         },
+        credentials: "include",
         body: JSON.stringify({
           email: this.state.email,
           password: this.state.password,
