@@ -33,7 +33,7 @@ const LogoImage = tw.img`h-12 mx-auto`;
 const MainContent = tw.div`mt-12 flex flex-col items-center`;
 const Heading = tw.h1`text-2xl xl:text-3xl font-extrabold`;
 const FormContainer = tw.div`w-full flex-1 mt-8`;
-const OtpContainer = tw.div` flex flex-row mt-8 gap-2`;
+const OtpContainer = tw.div` flex flex-row mt-5 gap-2`;
 // const OtpInputContainer = tw.div`col-span-2`;
 
 const SocialButtonsContainer = tw.div`flex flex-col items-center`;
@@ -199,36 +199,49 @@ export default class Signup extends Component {
     // window.alert("The form data is " + JSON.stringify(this.state));
     // console.log(email);
     try {
-      if (!this.state.otpValidate) {
+      // if (!this.state.otpValidate) {
+      //   this.setState({
+      //     isError: "Please verify your OTP first",
+      //   });
+      // } else {
+      this.setState({ isLoading: true });
+      // this.setState({isError: null})
+      const response = await fetch("http://localhost:5555/api/users/signup", {
+        method: "POST",
+        // credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Cache: "no-cache",
+        },
+        credentials: "include",
+
+        body: JSON.stringify({
+          name: this.state.name,
+          email: this.state.email,
+          mobile: this.state.mobileNo,
+          password: this.state.password,
+        }),
+      });
+      // var myHeaders = new Headers();
+      const responseData = await response.json();
+      console.log(response);
+      console.log(responseData);
+      // const jwt = responseData.token;
+      // myHeaders.append("Cookie", `jwt=${jwt}`);
+      // console.log("Token is: " + jwt);
+      if (!response.ok) {
+        console.log(responseData.message);
+        throw new Error(responseData.message);
+      }
+      console.log(responseData);
+      console.log(response.headers);
+      if (response && responseData.status === "success") {
         this.setState({
-          isError: "Please verify your OTP first",
+          isSignedUp: true,
         });
-      } else {
-        this.setState({ isLoading: true });
-        // this.setState({isError: null})
-        const response = await fetch("http://localhost:5555/api/users/signup", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
-            name: this.state.name,
-            email: this.state.email,
-            mobile: this.state.mobileNo,
-            password: this.state.password,
-          }),
-        });
-        const responseData = await response.json();
-        if (!response.ok) {
-          throw new Error(responseData.message);
-        }
-        console.log(responseData);
-        if (response && responseData.status === "success") {
-          this.setState({
-            isSignedUp: true,
-          });
-          console.log("signed up " + this.state.isSignedUp);
-        }
+        console.log("signed up " + this.state.isSignedUp);
+        // }
       }
     } catch (err) {
       console.log(err);
@@ -314,7 +327,7 @@ export default class Signup extends Component {
                           />
                           <OtpButton
                             type="button"
-                            onClick={this.sendOtpHandler}
+                            // onClick={this.sendOtpHandler}
                           >
                             <OTPButtonIcon className="icon" />
                             <span className="text">{OTPButtonText}</span>
@@ -331,7 +344,7 @@ export default class Signup extends Component {
                           />
                           <OtpButton
                             type="button"
-                            onClick={this.validateOtpHandler}
+                            // onClick={this.validateOtpHandler}
                           >
                             <VerifyButtonIcon className="icon" />
                             {/* <span className="text">Verify OTP</span> */}

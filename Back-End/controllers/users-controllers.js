@@ -30,11 +30,12 @@ const createSendToken = (user, statusCode, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
-    httpOnly: true,
+    httpOnly: false,
   };
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
   res.cookie("jwt", token, cookieOptions);
+  // res.setHeader("jwt", `access_token=${token}; Secure; HttpOnly;`);
 
   // Remove password from output
   user.password = undefined;
@@ -94,6 +95,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
 
   // const { messageId } = await courier.send({
+  /*
   courier
     .send({
       eventId: "personalized-welcome-email",
@@ -112,7 +114,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     .catch((err) => {
       console.log(err);
     });
-
+    */
   createSendToken(newUser, 201, res);
 });
 

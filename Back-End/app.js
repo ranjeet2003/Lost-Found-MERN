@@ -5,6 +5,7 @@ const cors = require("cors");
 const docRoutes = require("./routes/doc-routes");
 const usersRoutes = require("./routes/users-routes");
 const HttpError = require("./util/http-error");
+const cookieParser = require("cookie-parser");
 
 require("dotenv").config({ path: "./config.env" });
 
@@ -12,9 +13,14 @@ require("dotenv").config({ path: "./config.env" });
 
 const app = express();
 
-app.set("view engine", "pug");
-
-app.use(cors());
+// app.set("view engine", "pug");
+app.use(cookieParser(process.env.JWT_SECRET));
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 // app.use(express.bodyParser({ limit: "50mb" }));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(
@@ -31,12 +37,13 @@ app.use(bodyParser.json());
 app.use((req, res, next) => {
   // res.setHeader("Access-Control-Allow-Origin", "http://covin.gov.in/bookAppointment");
 
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
   res.setHeader(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
   res.setHeader("Access-Contorl-Allow-Methods", "GET, POST, PATCH, DELETE");
+  res.setHeader("Access-Control-Allow-Credentials", true);
   next();
 });
 
