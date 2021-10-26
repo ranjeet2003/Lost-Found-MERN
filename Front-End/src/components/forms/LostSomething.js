@@ -101,6 +101,7 @@ export default class LostSomething extends Component {
         method: "POST",
         body: formdata,
         redirect: "follow",
+        credentials: "include",
       };
 
       const response = await fetch(
@@ -116,10 +117,11 @@ export default class LostSomething extends Component {
               error.message || "Something Went Wrong, Please Try Again Later",
           });
         });
-      const responseData = await response.json();
-      if (!response.ok) {
-        throw new Error(responseData.message);
-      }
+      // const responseData = await response.json();
+      // if (!response.ok) {
+      //   throw new Error(responseData.message);
+      //   console.log(responseData.message);
+      // }
       console.log("isloading: " + this.state.isLoading);
     } catch (err) {
       console.log(err);
