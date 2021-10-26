@@ -187,11 +187,11 @@ class Login extends Component {
         {this.state.isLoggedIn ? (
           <>
             {window.history.pushState("/", "Page 2", "/")}
-            <SignedSaaSProductLandingPage />
+            <SignedSaaSProductLandingPage isLoggedIn={this.state.isLoggedIn} />
           </>
         ) : (
           <AnimationRevealPage>
-            <Header roundedHeaderButton={true} name={this.state.username} />
+            <Header roundedHeaderButton={true} />
 
             <Container>
               {this.state.isLoading && <Spinner asOverlay />}

@@ -10,6 +10,8 @@ import {
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 import EmailIllustrationSrc from "images/email-illustration.svg";
 import Header from "components/hero/CustomHeader.js";
+import SignedHero from "components/hero/SignedTwoColumnWithInput.js";
+
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 
 import ErrorModel from "../../helpers/ErrorModal";
@@ -91,11 +93,7 @@ export default class FoundSomething extends Component {
       formdata.append("name", this.state.docName);
       formdata.append("description", this.state.docDescription);
       formdata.append("serial", this.state.docSerial);
-      formdata.append(
-        "img",
-        // fileInput.files[0],
-        this.state.docImage
-      );
+      formdata.append("img", this.state.docImage);
 
       var requestOptions = {
         method: "POST",
@@ -103,26 +101,21 @@ export default class FoundSomething extends Component {
         redirect: "follow",
         credentials: "include",
       };
-
+      if (!this.state.docImage) {
+        this.setState({
+          isError: "Please select an image of your document",
+        });
+      }
       const response = await fetch(
         "http://localhost:5555/api/docs/foundDocs",
         requestOptions
-      )
-        .then((response) => response.text())
-        .then((result) => console.log(result))
-        .catch((error) => {
-          console.log("error", error);
-          this.setState({
-            isError:
-              error.message || "Something Went Wrong, Please Try Again Later",
-          });
-        });
-      // const responseData = await response.json();
-      // if (!response.ok) {
-      //   throw new Error(responseData.message);
-      //   console.log(responseData.message);
-      // }
+      );
+      const responseData = await response.json();
       console.log("isloading: " + this.state.isLoading);
+      if (!response.ok) {
+        throw new Error(responseData.message);
+      }
+      console.log(responseData);
     } catch (err) {
       console.log(err);
       this.setState({
@@ -156,7 +149,8 @@ export default class FoundSomething extends Component {
       <>
         <ErrorModel error={this.state.isError} onClear={this.errorHandler} />
         <AnimationRevealPage>
-          <Header roundedHeaderButton={true} />
+          {/* <Header roundedHeaderButton={true} /> */}
+          <SignedHero />
           <Container>
             {this.state.isLoading && <Spinner asOverlay />}
             <TwoColumn>
@@ -199,6 +193,7 @@ export default class FoundSomething extends Component {
                       type="file"
                       id="fileItem"
                       name="file"
+                      // required="required"
                       placeholder="Upload file here."
                       // value={this.state.docDescription}
                       onChange={this.onChangeHandlerFile}

@@ -102,6 +102,12 @@ export default class LostSomething extends Component {
         credentials: "include",
       };
 
+      if (!this.state.docImage) {
+        this.setState({
+          isError: "Please select an image of your document",
+        });
+      }
+
       const response = await fetch(
         "http://localhost:5555/api/docs/lostDocs",
         requestOptions
@@ -139,9 +145,10 @@ export default class LostSomething extends Component {
     return (
       <>
         <ErrorModel error={this.state.isError} onClear={this.errorHandler} />
+
         <AnimationRevealPage>
-          <Header roundedHeaderButton={true} />
-          {/* <SignedHero roundedHeaderButton={true} /> */}
+          {/* <Header roundedHeaderButton={true} /> */}
+          <SignedHero roundedHeaderButton={true} />
 
           <Container>
             {this.state.isLoading && <Spinner asOverlay />}

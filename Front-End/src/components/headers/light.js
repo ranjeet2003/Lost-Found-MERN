@@ -93,11 +93,11 @@ export default ({
       {/* <NavLink to="/login">Login </NavLink> */}
       <Link to="/about">About </Link>
 
-      <Link to="/lost-something" tw="lg:ml-12!">
+      <Link to="/login" tw="lg:ml-12!">
         Lost Something{" "}
       </Link>
 
-      <Link to="/found-something" tw="lg:ml-12!">
+      <Link to="/login" tw="lg:ml-12!">
         Found Something{" "}
       </Link>
       {/* <NavLink href="/#">Contact Us</NavLink> */}

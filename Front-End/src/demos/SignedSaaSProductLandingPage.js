@@ -23,13 +23,16 @@ import donateImageSrc from "images/donate.jpg";
 // import { ReactComponent as BriefcaseIcon } from "feather-icons/dist/icons/briefcase.svg";
 // import { ReactComponent as MoneyIcon } from "feather-icons/dist/icons/dollar-sign.svg";
 
-export default (props) => {
+function SignedSaaSProductLandingPage(props) {
   const Subheading = tw.span`uppercase tracking-widest font-bold text-primary-500`;
   const HighlightedText = tw.span`text-primary-500`;
+  // console.log(props)
+  console.log("login props: " + props.isLoggedIn);
 
   return (
     <AnimationRevealPage>
       <SignedHero roundedHeaderButton={true} />
+
       <Features
         // subheading={<Subheading>Features</Subheading>}
         heading={
@@ -205,4 +208,6 @@ export default (props) => {
       <Footer />
     </AnimationRevealPage>
   );
-};
+}
+
+export default SignedSaaSProductLandingPage;
