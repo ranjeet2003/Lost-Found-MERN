@@ -82,66 +82,32 @@ export default class FoundSomething extends Component {
   };
 
   onSubmitHandler = async (event) => {
-    // window.alert("The form data is " + JSON.stringify(this.state));
     event.preventDefault();
-
-    /*
-    try {
-      this.setState({ ...this.state, isLoading: true });
-      const res = await fetch("http://localhost:5555/api/docs", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          name: this.state.docName,
-          serial: this.state.docSerial,
-          description: this.state.docDescription,
-          image: this.state.docImage,
-          isLost: false,
-        }),
-      });
-
-      const responseData = await res.json();
-
-      if (!res.ok) {
-        throw new Error(responseData.message);
-      }
-      this.setState({
-        docName: "",
-        docSerial: "",
-        docDescription: "",
-        docImage: "",
-      });
-      console.log(responseData);
-    } catch (err) {
-      console.log(err);
-      this.setState({
-        ...this.state,
-        isError: err.message || "Something Went Wrong, Please Try Again Later",
-      });
-    }
-    */
-    var formdata = new FormData();
-    formdata.append("name", this.state.docName);
-    formdata.append("description", this.state.docDescription);
-    formdata.append("serial", this.state.docSerial);
-    formdata.append(
-      "img",
-      // fileInput.files[0],
-      this.state.docImage
-    );
-
-    var requestOptions = {
-      method: "POST",
-      body: formdata,
-      redirect: "follow",
-    };
-
     try {
       this.setState({ isLoading: true });
-      console.log(this.state.isLoading);
-      fetch("http://localhost:5555/api/docs/foundDocs", requestOptions)
+      console.log("isloading: " + this.state.isLoading);
+
+      var formdata = new FormData();
+      formdata.append("name", this.state.docName);
+      formdata.append("description", this.state.docDescription);
+      formdata.append("serial", this.state.docSerial);
+      formdata.append(
+        "img",
+        // fileInput.files[0],
+        this.state.docImage
+      );
+
+      var requestOptions = {
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+        credentials: "include",
+      };
+
+      const response = await fetch(
+        "http://localhost:5555/api/docs/foundDocs",
+        requestOptions
+      )
         .then((response) => response.text())
         .then((result) => console.log(result))
         .catch((error) => {
@@ -151,15 +117,19 @@ export default class FoundSomething extends Component {
               error.message || "Something Went Wrong, Please Try Again Later",
           });
         });
-
-      this.setState({ isLoading: false });
-      console.log(this.state.isLoading);
+      // const responseData = await response.json();
+      // if (!response.ok) {
+      //   throw new Error(responseData.message);
+      //   console.log(responseData.message);
+      // }
+      console.log("isloading: " + this.state.isLoading);
     } catch (err) {
       console.log(err);
       this.setState({
         isError: err.message || "Something Went Wrong, Please Try Again Later",
       });
     }
+    this.setState({ isLoading: false });
   };
 
   fileHandler(file) {
