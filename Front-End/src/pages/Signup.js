@@ -2,6 +2,7 @@ import { React, Component } from "react";
 import { Link } from "react-router-dom";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import SaaSProductLandingPage from "../demos/SaaSProductLandingPage";
+import SignedSaaSProductLandingPage from "../demos/SignedSaaSProductLandingPage";
 
 import { Container as ContainerBase } from "components/misc/Layouts";
 import tw from "twin.macro";
@@ -283,7 +284,7 @@ export default class Signup extends Component {
         {this.state.isSignedUp ? (
           <>
             {window.history.pushState("/", "Page 2", "/")}
-            <SaaSProductLandingPage userName={this.state.name} />
+            <SignedSaaSProductLandingPage />
           </>
         ) : (
           <AnimationRevealPage>
