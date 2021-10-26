@@ -147,7 +147,7 @@ class Login extends Component {
         });
         console.log("Logged In: " + this.state.isLoggedIn);
       }
-      this.setState({ username: responseData.name });
+      this.setState({ username: responseData.data.user.name });
       // }
       console.log(this.state.username);
     } catch (err) {
