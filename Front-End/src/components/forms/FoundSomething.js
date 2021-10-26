@@ -2,22 +2,17 @@ import React, { Component } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 // import FileBase from "react-file-base64";
-import { css } from "styled-components/macro"; //eslint-disable-line
+// import { css } from "styled-components/macro"; //eslint-disable-line
 import {
   SectionHeading,
   Subheading as SubheadingBase,
 } from "components/misc/Headings.js";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 import EmailIllustrationSrc from "images/email-illustration.svg";
-import Header from "components/hero/CustomHeader.js";
-import SignedHero from "components/hero/SignedTwoColumnWithInput.js";
 import SignedHeader from "../headers/SignedHeader";
-
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
-
 import ErrorModel from "../../helpers/ErrorModal";
 import Spinner from "../../helpers/LoadingSpinner";
-
 const Container = tw.div`relative`;
 const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;

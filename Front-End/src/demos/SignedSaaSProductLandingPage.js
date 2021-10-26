@@ -4,7 +4,6 @@ import { FaRupeeSign } from "react-icons/fa";
 
 import { css } from "styled-components/macro"; //eslint-disable-line
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
-import Hero from "components/hero/TwoColumnWithInput.js";
 import SignedHero from "components/hero/SignedTwoColumnWithInput.js";
 import Features from "components/features/ThreeColWithSideImage";
 import MainFeature from "components/features/TwoColWithButton.js";

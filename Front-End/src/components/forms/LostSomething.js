@@ -9,8 +9,6 @@ import {
 } from "components/misc/Headings.js";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 import EmailIllustrationSrc from "images/email-illustration.svg";
-import Header from "components/hero/CustomHeader.js";
-import SignedHero from "components/hero/SignedTwoColumnWithInput.js";
 import SignedHeader from "../headers/SignedHeader";
 
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";

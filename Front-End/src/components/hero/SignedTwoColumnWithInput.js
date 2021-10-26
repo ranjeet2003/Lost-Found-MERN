@@ -4,8 +4,6 @@ import tw from "twin.macro";
 //eslint-disable-next-line
 import { css } from "styled-components/macro";
 
-import Header from "../headers/light.js";
-// import SignedHeader from "../headers";
 import SignedHeader from "../headers/SignedHeader";
 
 import { ReactComponent as SvgDecoratorBlob1 } from "../../images/svg-decorator-blob-1.svg";

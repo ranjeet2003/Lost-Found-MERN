@@ -1,24 +1,16 @@
 import { React, Component } from "react";
 import { Link } from "react-router-dom";
-// import { hashHistory } from "react-router";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
-import SaaSProductLandingPage from "../demos/SaaSProductLandingPage";
 import SignedSaaSProductLandingPage from "../demos/SignedSaaSProductLandingPage";
 import { Container as ContainerBase } from "components/misc/Layouts";
 import Header from "components/hero/CustomHeader.js";
 import tw from "twin.macro";
 import styled from "styled-components";
-import { css } from "styled-components/macro"; //eslint-disable-line
 import illustration from "images/login-illustration.svg";
 import logo from "images/logo-new.jpg";
 import googleIconImageSrc from "images/google-icon.png";
 import twitterIconImageSrc from "images/twitter-icon.png";
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
-// import { useHistory } from "react-router-dom";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-
-// import Header from "../components/headers/light";
-
 import ErrorModel from "../helpers/ErrorModal";
 import Spinner from "../helpers/LoadingSpinner";
 

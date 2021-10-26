@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 //eslint-disable-next-line
-import { css } from "styled-components/macro";
+// import { css } from "styled-components/macro";
 
 import Header from "../headers/light.js";
 
@@ -35,16 +35,6 @@ const IllustrationContainer = tw.div`flex justify-center lg:justify-end items-ce
 const DecoratorBlob1 = styled(SvgDecoratorBlob1)`
   ${tw`pointer-events-none opacity-5 absolute left-0 bottom-0 h-64 w-64 transform -translate-x-2/3 -z-10`}
 `;
-
-// const CustomersLogoStrip = styled.div`
-//   ${tw`mt-12 lg:mt-20`}
-//   p {
-//     ${tw`uppercase text-sm lg:text-xs tracking-wider font-bold text-gray-500`}
-//   }
-//   img {
-//     ${tw`mt-4 w-full lg:pr-16 xl:pr-32 opacity-50`}
-//   }
-// `;
 
 export default ({ roundedHeaderButton }) => {
   return (
