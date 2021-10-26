@@ -95,7 +95,6 @@ const lostInfo = async (req, res, next) => {
               isDocMatched = true;
             }
 
-            /*
             if (isDocMatched) {
               courier
                 .send({
@@ -142,7 +141,6 @@ const lostInfo = async (req, res, next) => {
                   console.log(err);
                 });
             }
-            */
 
             const createdDoc = new Document({
               name: obj.name,

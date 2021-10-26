@@ -11,6 +11,7 @@ import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 import EmailIllustrationSrc from "images/email-illustration.svg";
 import Header from "components/hero/CustomHeader.js";
 import SignedHero from "components/hero/SignedTwoColumnWithInput.js";
+import SignedHeader from "../headers/SignedHeader";
 
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import ErrorModel from "../../helpers/ErrorModal";
@@ -79,6 +80,13 @@ export default class LostSomething extends Component {
     });
   }
 
+  checkImage = () => {
+    if (!this.state.docImage) {
+      return false;
+    }
+    return true;
+  };
+
   errorHandler = () => {
     this.setState({ isError: null });
   };
@@ -102,22 +110,22 @@ export default class LostSomething extends Component {
         credentials: "include",
       };
 
-      if (!this.state.docImage) {
+      if (!this.checkImage()) {
         this.setState({
           isError: "Please select an image of your document",
         });
+      } else {
+        const response = await fetch(
+          "http://localhost:5555/api/docs/lostDocs",
+          requestOptions
+        );
+        const responseData = await response.json();
+        console.log("isloading: " + this.state.isLoading);
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+        console.log(responseData);
       }
-
-      const response = await fetch(
-        "http://localhost:5555/api/docs/lostDocs",
-        requestOptions
-      );
-      const responseData = await response.json();
-      console.log("isloading: " + this.state.isLoading);
-      if (!response.ok) {
-        throw new Error(responseData.message);
-      }
-      console.log(responseData);
     } catch (err) {
       console.log(err);
       this.setState({
@@ -148,7 +156,7 @@ export default class LostSomething extends Component {
 
         <AnimationRevealPage>
           {/* <Header roundedHeaderButton={true} /> */}
-          <SignedHero roundedHeaderButton={true} />
+          <SignedHeader roundedHeaderButton={true} />
 
           <Container>
             {this.state.isLoading && <Spinner asOverlay />}

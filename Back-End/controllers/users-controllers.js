@@ -88,14 +88,14 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
   });
 
-  const message = "Thanks User for signup";
+  // const message = "Thanks User for signup";
 
   const courier = CourierClient({
     authorizationToken: process.env.COURIER_AUTH_TOKEN,
   });
 
   // const { messageId } = await courier.send({
-  /*
+
   courier
     .send({
       eventId: "personalized-welcome-email",
@@ -114,7 +114,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     .catch((err) => {
       console.log(err);
     });
-    */
+
   createSendToken(newUser, 201, res);
 });
 

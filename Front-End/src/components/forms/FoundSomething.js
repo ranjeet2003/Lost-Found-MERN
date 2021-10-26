@@ -11,6 +11,7 @@ import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 import EmailIllustrationSrc from "images/email-illustration.svg";
 import Header from "components/hero/CustomHeader.js";
 import SignedHero from "components/hero/SignedTwoColumnWithInput.js";
+import SignedHeader from "../headers/SignedHeader";
 
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 
@@ -83,6 +84,13 @@ export default class FoundSomething extends Component {
     this.setState({ isError: null });
   };
 
+  checkImage = () => {
+    if (!this.state.docImage) {
+      return false;
+    }
+    return true;
+  };
+
   onSubmitHandler = async (event) => {
     event.preventDefault();
     try {
@@ -101,21 +109,23 @@ export default class FoundSomething extends Component {
         redirect: "follow",
         credentials: "include",
       };
-      if (!this.state.docImage) {
+
+      if (!this.checkImage()) {
         this.setState({
           isError: "Please select an image of your document",
         });
+      } else {
+        const response = await fetch(
+          "http://localhost:5555/api/docs/foundDocs",
+          requestOptions
+        );
+        const responseData = await response.json();
+        console.log("isloading: " + this.state.isLoading);
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+        console.log(responseData);
       }
-      const response = await fetch(
-        "http://localhost:5555/api/docs/foundDocs",
-        requestOptions
-      );
-      const responseData = await response.json();
-      console.log("isloading: " + this.state.isLoading);
-      if (!response.ok) {
-        throw new Error(responseData.message);
-      }
-      console.log(responseData);
     } catch (err) {
       console.log(err);
       this.setState({
@@ -150,7 +160,7 @@ export default class FoundSomething extends Component {
         <ErrorModel error={this.state.isError} onClear={this.errorHandler} />
         <AnimationRevealPage>
           {/* <Header roundedHeaderButton={true} /> */}
-          <SignedHero />
+          <SignedHeader />
           <Container>
             {this.state.isLoading && <Spinner asOverlay />}
             <TwoColumn>
