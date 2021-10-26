@@ -283,7 +283,7 @@ export default class Signup extends Component {
         {this.state.isSignedUp ? (
           <>
             {window.history.pushState("/", "Page 2", "/")}
-            <SaaSProductLandingPage />
+            <SaaSProductLandingPage userName={this.state.name} />
           </>
         ) : (
           <AnimationRevealPage>

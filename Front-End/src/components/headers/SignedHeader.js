@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
@@ -65,97 +65,111 @@ export const DesktopNavLinks = tw.nav`
   hidden lg:flex flex-1 justify-between items-center
 `;
 
-export default class SignedHeader extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isSigned: false,
-    };
-  }
+export default ({
+  roundedHeaderButton = false,
+  logoLink,
+  links,
+  className,
+  collapseBreakpointClass = "lg",
+  // name = props.userName,
+}) => {
+  // console.log(name);
+  // const loginSignuoLinks = (
+  //   <>
+  //     {" "}
+  //     <Link to="/login" tw="lg:ml-12!">
+  //       Login
+  //     </Link>
+  //     <Link
+  //       css={roundedHeaderButton && tw`rounded-full lg:ml-12!`}
+  //       to="/signup"
+  //     >
+  //       Sign Up
+  //     </Link>{" "}
+  //   </>
+  // );
+  // const signedLink = name !== "" ? loginSignuoLinks : name;
+  const defaultLinks = [
+    <NavLinks key={1}>
+      {/* <NavLink to="/login">Login </NavLink> */}
+      <Link to="/about">About </Link>
 
-  render(
-    roundedHeaderButton = false,
-    logoLink,
-    links,
-    className,
-    collapseBreakpointClass = "lg"
-  ) {
-    const defaultLinks = [
-      <NavLinks key={1}>
-        {/* <NavLink to="/login">Login </NavLink> */}
-        <Link to="/about">About </Link>
-
-        <Link to="/lost-something" tw="lg:ml-12!">
-          Lost Something{" "}
-        </Link>
-
-        <Link to="/found-something" tw="lg:ml-12!">
-          Found Something{" "}
-        </Link>
-        {/* <NavLink href="/#">Contact Us</NavLink> */}
-        {/* <Link to="/login" tw="lg:ml-12!">
-          Login
-        </Link>
-        <Link
-          css={roundedHeaderButton && tw`rounded-full lg:ml-12!`}
-          to="/signup"
-        >
-          Sign Up
-        </Link> */}
-      </NavLinks>,
-    ];
-
-    const { showNavLinks, animation, toggleNavbar } = useAnimatedNavToggler();
-    const collapseBreakpointCss =
-      collapseBreakPointCssMap[collapseBreakpointClass];
-
-    const defaultLogoLink = (
-      <Link to="/">
-        <LogoLink>
-          <img src={logo1} alt="logo" />
-          Lost-Found
-        </LogoLink>
+      <Link to="/lost-something" tw="lg:ml-12!">
+        Lost Something{" "}
       </Link>
-    );
 
-    logoLink = logoLink || defaultLogoLink;
-    links = links || defaultLinks;
+      <Link to="/found-something" tw="lg:ml-12!">
+        Found Something{" "}
+      </Link>
+      {/* <NavLink href="/#">Contact Us</NavLink> */}
+      {/* <Link to="/login" tw="lg:ml-12!">
+        Login
+      </Link>
+      <Link
+        css={roundedHeaderButton && tw`rounded-full lg:ml-12!`}
+        to="/signup"
+      >
+        Sign Up
+      </Link> */}
+      {/* <Link to="/login">{signedLink}</Link> */}
+      {/* {loginSignuoLinks} */}
+    </NavLinks>,
+  ];
 
-    return (
-      <>
-        <Header className={className || "header-light"}>
-          <DesktopNavLinks css={collapseBreakpointCss.desktopNavLinks}>
-            {logoLink}
-            {links}
-          </DesktopNavLinks>
+  const { showNavLinks, animation, toggleNavbar } = useAnimatedNavToggler();
+  const collapseBreakpointCss =
+    collapseBreakPointCssMap[collapseBreakpointClass];
 
-          <MobileNavLinksContainer
-            css={collapseBreakpointCss.mobileNavLinksContainer}
-          >
-            {logoLink}
-            <MobileNavLinks
-              initial={{ x: "150%", display: "none" }}
-              animate={animation}
-              css={collapseBreakpointCss.mobileNavLinks}
-            >
-              {links}
-            </MobileNavLinks>
-            <NavToggle
-              onClick={toggleNavbar}
-              className={showNavLinks ? "open" : "closed"}
-            >
-              {showNavLinks ? (
-                <CloseIcon tw="w-6 h-6" />
-              ) : (
-                <MenuIcon tw="w-6 h-6" />
-              )}
-            </NavToggle>
-          </MobileNavLinksContainer>
-        </Header>
-      </>
-    );
-  }
-}
+  const defaultLogoLink = (
+    <Link to="/">
+      <LogoLink>
+        <img src={logo1} alt="logo" />
+        Lost-Found
+      </LogoLink>
+    </Link>
+  );
+
+  logoLink = logoLink || defaultLogoLink;
+  links = links || defaultLinks;
+
+  return (
+    <Header className={className || "header-light"}>
+      <DesktopNavLinks css={collapseBreakpointCss.desktopNavLinks}>
+        {logoLink}
+        {links}
+      </DesktopNavLinks>
+
+      <MobileNavLinksContainer
+        css={collapseBreakpointCss.mobileNavLinksContainer}
+      >
+        {logoLink}
+        <MobileNavLinks
+          initial={{ x: "150%", display: "none" }}
+          animate={animation}
+          css={collapseBreakpointCss.mobileNavLinks}
+        >
+          {links}
+        </MobileNavLinks>
+        <NavToggle
+          onClick={toggleNavbar}
+          className={showNavLinks ? "open" : "closed"}
+        >
+          {showNavLinks ? (
+            <CloseIcon tw="w-6 h-6" />
+          ) : (
+            <MenuIcon tw="w-6 h-6" />
+          )}
+        </NavToggle>
+      </MobileNavLinksContainer>
+    </Header>
+  );
+};
+
+/* The below code is for generating dynamic break points for navbar.
+ * Using this you can specify if you want to switch
+ * to the toggleable mobile navbar at "sm", "md" or "lg" or "xl" above using the collapseBreakpointClass prop
+ * Its written like this because we are using macros and we can not insert dynamic variables in macros
+ */
 
 const collapseBreakPointCssMap = {
   sm: {

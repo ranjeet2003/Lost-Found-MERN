@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 // import { hashHistory } from "react-router";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import SaaSProductLandingPage from "../demos/SaaSProductLandingPage";
+import SignedSaaSProductLandingPage from "../demos/SignedSaaSProductLandingPage";
 import { Container as ContainerBase } from "components/misc/Layouts";
 import Header from "components/hero/CustomHeader.js";
 import tw from "twin.macro";
@@ -186,7 +187,7 @@ class Login extends Component {
         {this.state.isLoggedIn ? (
           <>
             {window.history.pushState("/", "Page 2", "/")}
-            <SaaSProductLandingPage />
+            <SignedSaaSProductLandingPage />
           </>
         ) : (
           <AnimationRevealPage>

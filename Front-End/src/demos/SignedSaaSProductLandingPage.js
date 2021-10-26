@@ -5,6 +5,7 @@ import { FaRupeeSign } from "react-icons/fa";
 import { css } from "styled-components/macro"; //eslint-disable-line
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import Hero from "components/hero/TwoColumnWithInput.js";
+import SignedHero from "components/hero/SignedTwoColumnWithInput.js";
 import Features from "components/features/ThreeColWithSideImage";
 import MainFeature from "components/features/TwoColWithButton.js";
 import MainFeature2 from "components/features/TwoColWithTwoHorizontalFeaturesAndButton.js";
@@ -28,7 +29,7 @@ export default (props) => {
 
   return (
     <AnimationRevealPage>
-      <Hero roundedHeaderButton={true} />
+      <SignedHero roundedHeaderButton={true} />
       <Features
         // subheading={<Subheading>Features</Subheading>}
         heading={
