@@ -54,7 +54,7 @@ const foundInfo = async (req, res, next) => {
   const imageName = temp1 + req.file.filename;
 
   Tesseract.recognize(imageName, "eng", {
-    // logger: (m) => console.log(m),
+    logger: (m) => console.log(m),
   })
     .then(({ data: { text } }) => {
       const hash = crypto.createHash("sha256").update(text).digest("base64");
@@ -71,16 +71,10 @@ const foundInfo = async (req, res, next) => {
           if (err) console.log(err);
           else {
             if (!data) {
-              // const error = new HttpError(
-              //   "Your uploaded document did not found on database, Please wait for other user to upload same document.",
-              //   401
-              // );
               isDocMatched = false;
-              // return next(error);
             } else if (data.encText === ocrData) {
               isDocMatched = true;
             }
-
             if (isDocMatched) {
               courier
                 .send({

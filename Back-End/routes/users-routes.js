@@ -1,11 +1,8 @@
 const express = require("express");
-const { check } = require("express-validator");
 
 const usersController = require("../controllers/users-controllers");
 
 const router = express.Router();
-
-// router.get("/", usersController.getUsers);
 
 router.post("/signup", usersController.signup);
 router.post("/login", usersController.login);
@@ -20,6 +17,5 @@ router.post("/validateOTP", usersController.validateOTP);
 router.use(usersController.protect);
 
 router.patch("/updateMyPassword", usersController.updatePassword);
-// router.get("/numUser", usersController.getUsersNum);
 
 module.exports = router;

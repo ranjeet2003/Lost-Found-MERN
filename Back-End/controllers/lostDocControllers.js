@@ -14,10 +14,6 @@ const sendEmail = require("../util/email");
 const { CourierClient } = require("@trycourier/courier");
 require("dotenv").config({ path: "./config.env" });
 
-// const client = require("twilio")(accountSid, authToken);
-
-// let transporter = nodemailer.createTransport(mailGun(auth));
-
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/LostUpload");
@@ -43,14 +39,6 @@ const upload = multer({
 exports.uploadDocs = upload.single("img");
 
 const lostInfo = async (req, res, next) => {
-  //   console.log(typeof req.file.filename);
-  // console.log(req.user);
-  // let mailOptions = {
-  //   from: "ranjeetgautam13032@gmail.com", // TODO: email sender
-  //   to: req.user.email, // TODO: email receiver
-  //   subject: "Nodemailer - Test",
-  //   text: "Wooohooo it works!!",
-  // };
   var obj = {
     name: req.body.name,
     description: req.body.description,
@@ -62,8 +50,7 @@ const lostInfo = async (req, res, next) => {
       contentType: "image/png",
     },
   };
-  //   console.log(req.file);
-  //   console.log(obj);
+
   let ocrData = "";
   let reqPath = path.join(__dirname, "../");
   let temp = path.join(reqPath, "public");

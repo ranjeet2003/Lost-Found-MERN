@@ -6,9 +6,6 @@ const { validationResult } = require("express-validator");
 const HttpError = require("../util/http-error");
 const User = require("../models/user");
 const AppError = require("./../util/appError");
-// const Email = require("../util/email");
-const sendEmail = require("../util/email");
-const sgMail = require("@sendgrid/mail");
 const { CourierClient } = require("@trycourier/courier");
 
 require("dotenv").config({ path: "./config.env" });
@@ -35,9 +32,6 @@ const createSendToken = (user, statusCode, res) => {
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
   res.cookie("jwt", token, cookieOptions);
-  // res.setHeader("jwt", `access_token=${token}; Secure; HttpOnly;`);
-
-  // Remove password from output
   user.password = undefined;
 
   res.status(statusCode).json({
@@ -47,8 +41,6 @@ const createSendToken = (user, statusCode, res) => {
       user,
     },
   });
-  // res.redirect("http://localhost:3000");
-  // .redirect("/");
 };
 
 const getUsers = async (req, res, next) => {
@@ -88,13 +80,9 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
   });
 
-  // const message = "Thanks User for signup";
-
   const courier = CourierClient({
     authorizationToken: process.env.COURIER_AUTH_TOKEN,
   });
-
-  // const { messageId } = await courier.send({
 
   courier
     .send({

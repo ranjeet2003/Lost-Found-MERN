@@ -9,11 +9,8 @@ const cookieParser = require("cookie-parser");
 
 require("dotenv").config({ path: "./config.env" });
 
-// const newDocRoute = require("./routes/docRoute");
-
 const app = express();
 
-// app.set("view engine", "pug");
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(
   cors({
@@ -21,7 +18,6 @@ app.use(
     credentials: true,
   })
 );
-// app.use(express.bodyParser({ limit: "50mb" }));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(
   bodyParser.urlencoded({
@@ -35,8 +31,6 @@ app.use(bodyParser.json());
 
 // CORS
 app.use((req, res, next) => {
-  // res.setHeader("Access-Control-Allow-Origin", "http://covin.gov.in/bookAppointment");
-
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -49,7 +43,6 @@ app.use((req, res, next) => {
 
 app.use("/api/docs", docRoutes);
 app.use("/api/users", usersRoutes);
-// app.use("/api/docs", newDocRoute);
 
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);
