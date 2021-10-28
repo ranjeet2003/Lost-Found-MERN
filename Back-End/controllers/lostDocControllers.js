@@ -23,7 +23,7 @@ const multerStorage = multer.diskStorage({
     cb(null, file.fieldname + "-" + Date.now() + "." + ext);
   },
 });
-
+//Filtering an image file
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
